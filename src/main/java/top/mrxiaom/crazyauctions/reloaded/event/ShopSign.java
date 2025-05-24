@@ -40,7 +40,7 @@ public class ShopSign
                     Sign sign = (Sign) clickedBlock.getState();
                     if (sign.getLine(0) != null && sign.getLine(0).equalsIgnoreCase(config.getString("Settings.Shop-Sign.Title-Format"))) {
                         if (sign.getLine(1) != null) {
-                            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                            Main.getInstance().getScheduler().runTaskLater(() -> {
                                 GUI.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
                             }, 1L);
                         }
@@ -51,7 +51,7 @@ public class ShopSign
                     Sign sign = (Sign) clickedBlock.getState();
                     if (sign.getLine(0) != null && sign.getLine(0).equalsIgnoreCase(config.getString("Settings.Shop-Sign.Title-Format"))) {
                         if (sign.getLine(1) != null) {
-                            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                            Main.getInstance().getScheduler().runTaskLater(() -> {
                                 GUI.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
                             }, 1L);
                         }
@@ -68,7 +68,7 @@ public class ShopSign
                     Sign sign = (Sign) clickedBlock.getState();
                     if (sign.getLine(0) != null && sign.getLine(0).equalsIgnoreCase(config.getString("Settings.Shop-Sign.Title-Format"))) {
                         if (sign.getLine(1) != null) {
-                            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                            Main.getInstance().getScheduler().runTaskLater(() -> {
                                 GUI.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
                             }, 1L);
                         }

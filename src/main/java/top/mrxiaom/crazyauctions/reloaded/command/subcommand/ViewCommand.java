@@ -39,7 +39,7 @@ public class ViewCommand
             if (target != null) {
                 GUI.openViewer(player, target.getUniqueId(), 1);
             } else {
-                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                Main.getInstance().getScheduler().runTaskLater(() -> {
                     GUI.openViewer(player, Bukkit.getOfflinePlayer(args[1]).getUniqueId(), 1);
                 }, 1L);
             }

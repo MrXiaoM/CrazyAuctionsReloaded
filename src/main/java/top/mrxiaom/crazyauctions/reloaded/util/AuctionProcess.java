@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import org.bukkit.scheduler.BukkitTask;
 import top.mrxiaom.crazyauctions.reloaded.Main;
+import top.mrxiaom.crazyauctions.reloaded.api.IRunTask;
 import top.mrxiaom.crazyauctions.reloaded.api.events.AuctionWinBidEvent;
 import top.mrxiaom.crazyauctions.reloaded.currency.CurrencyManager;
 import top.mrxiaom.crazyauctions.reloaded.data.ItemMail;
@@ -20,7 +21,7 @@ import top.mrxiaom.crazyauctions.reloaded.database.Storage;
 import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
 
 public class AuctionProcess {
-    private static BukkitTask task;
+    private static IRunTask task;
 
     public static void stop() {
         if (task != null) {
@@ -32,7 +33,7 @@ public class AuctionProcess {
     public static void start(double updateDelay) {
         stop();
         long interval = (long)(updateDelay * 1000L) / 50L;
-        task = Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), () -> {
+        task = Main.getInstance().getScheduler().runTaskTimerAsync(() -> {
             try {
                 updateAuctionData();
             } catch (Exception ex) {
@@ -96,7 +97,7 @@ public class AuctionProcess {
                             if (PluginControl.isOnline(buyer) && PluginControl.getPlayer(buyer) != null) {
                                 Player player = Bukkit.getPlayer(buyer);
                                 AuctionWinBidEvent event = new AuctionWinBidEvent(player, mg, price);
-                                Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                                Main.getInstance().getScheduler().runTask(() -> {
                                     Bukkit.getPluginManager().callEvent(event);
                                 });
                                 MessageUtil.sendMessage(player, "Win-Bidding", placeholders);

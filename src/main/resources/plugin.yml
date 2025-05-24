@@ -7,6 +7,7 @@ authors:
 main: top.mrxiaom.crazyauctions.reloaded.Main
 version: ${version}
 api-version: 1.13
+folia-supported: true
 description: Reloaded version of CrazyAuctionsPlus plugin. The original author was TRCStudioDean (TRC Studio & PA Project) and BadBones69.
 depend:
   - Vault

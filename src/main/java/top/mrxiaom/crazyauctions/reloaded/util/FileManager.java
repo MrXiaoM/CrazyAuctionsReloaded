@@ -300,7 +300,7 @@ public class FileManager {
      */
     public static void synchronize(CommandSender... sender) {
         syncSenders = sender;
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), synchronizeRunnable);
+        Main.getInstance().getScheduler().runTaskAsync(synchronizeRunnable);
     }
     
     /**
@@ -308,7 +308,7 @@ public class FileManager {
      */
     public static void backup(CommandSender... sender) {
         backupSenders = sender;
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), backupRunnable);
+        Main.getInstance().getScheduler().runTaskAsync(backupRunnable);
     }
     
     public static boolean isBackingUp() {
@@ -533,7 +533,7 @@ public class FileManager {
     }
     
     public FileManager setup(Main main) {
-        Bukkit.getScheduler().runTask(main, GUI::closeAllGui);
+        main.getScheduler().runTask(GUI::closeAllGui);
         prefix = "[" + main.getName() + "] ";
         this.main = main;
         if (!main.getDataFolder().exists()) {

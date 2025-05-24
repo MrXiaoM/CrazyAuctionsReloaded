@@ -174,7 +174,7 @@ public class GuiItemViewer extends AbstractGui {
                         }
                         MessageUtil.sendMessage(player, "Admin-Force-Cancelled");
                         playClick(player);
-                        Bukkit.getScheduler().runTask(plugin, this::open);
+                        reopen();
                         return;
                     }
                 }
@@ -182,7 +182,7 @@ public class GuiItemViewer extends AbstractGui {
                 if (mg.getItemOwner().getUUID().equals(player.getUniqueId())) {
                     inventory.setItem(slot, makeStandardIcon(config, "Settings.GUISettings.OtherSettings.Your-Item", "Your-Item"));
                     playClick(player);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, restoreItem, 3 * 20);
+                    plugin.getScheduler().runTaskLater(restoreItem, 3 * 20L);
                     return;
                 }
                 double cost = mg.getPrice();
@@ -192,12 +192,12 @@ public class GuiItemViewer extends AbstractGui {
                 if (CurrencyManager.getMoney(player) < cost && !mg.getShopType().equals(ShopType.BUY)) {
                     inventory.setItem(slot, makeStandardIcon(config, "Settings.GUISettings.OtherSettings.Cant-Afford", "Cant-Afford"));
                     playClick(player);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, restoreItem, 3 * 20);
+                    plugin.getScheduler().runTaskLater(restoreItem, 3 * 20L);
                     return;
                 } else if (mg.getShopType().equals(ShopType.BUY) && PluginControl.hasNoMaterial(player, mg.getItem())) {
                     inventory.setItem(slot, makeStandardIcon(config, "Settings.GUISettings.OtherSettings.Not-owned", "Not-owned"));
                     playClick(player);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, restoreItem, 3 * 20);
+                    plugin.getScheduler().runTaskLater(restoreItem, 3 * 20L);
                     return;
                 }
                 switch (mg.getShopType()) {
@@ -205,7 +205,7 @@ public class GuiItemViewer extends AbstractGui {
                         if (!mg.getTopBidder().equalsIgnoreCase("None") && UUID.fromString(mg.getTopBidder().split(":")[1]).equals(player.getUniqueId())) {
                             inventory.setItem(slot, makeStandardIcon(config, "Settings.GUISettings.Auction-Settings.Top-Bidder", "Top-Bidder"));
                             playClick(player);
-                            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, restoreItem, 3 * 20);
+                            plugin.getScheduler().runTaskLater(restoreItem, 3 * 20L);
                             return;
                         }
                         playClick(player);

@@ -13,7 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import org.bukkit.scheduler.BukkitTask;
+import top.mrxiaom.crazyauctions.reloaded.api.IRunTask;
+import top.mrxiaom.crazyauctions.reloaded.api.IScheduler;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsCommand;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommandType;
 import top.mrxiaom.crazyauctions.reloaded.currency.Vault;
@@ -29,16 +30,25 @@ import top.mrxiaom.crazyauctions.reloaded.util.*;
 public class Main
     extends JavaPlugin 
 {
-    public static Main main;
+    private static Main instance;
     public static Properties language = new Properties();
     
     private static final String lang = Locale.getDefault().toString();
     private GuiManager guiManager;
-    
-    public static Main getInstance() {
-        return main;
+    private final IScheduler scheduler;
+    public Main() {
+        scheduler = new FoliaLibScheduler(this);
+        instance = this;
     }
     
+    public static Main getInstance() {
+        return instance;
+    }
+
+    public IScheduler getScheduler() {
+        return scheduler;
+    }
+
     @Override
     public void onEnable() {
         AdventureUtil.init(this);
@@ -46,7 +56,6 @@ public class Main
         PAPI.initialize();
         guiManager = new GuiManager(this);
         long time = System.currentTimeMillis();
-        main = this;
         if (lang.equalsIgnoreCase("zh_cn")) {
             try {
                 language.load(getClass().getResourceAsStream("/Languages/Chinese.properties"));
@@ -79,14 +88,15 @@ public class Main
         registerCommandExecutor();
         reloadTimer();
         if (language.get("PluginEnabledSuccessfully") != null) getServer().getConsoleSender().sendMessage(language.getProperty("PluginEnabledSuccessfully").replace("{time}", String.valueOf(System.currentTimeMillis() - time)).replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
-        Bukkit.getScheduler().runTask(this, Vault::setupEconomy);
+        getScheduler().runTask(Vault::setupEconomy);
     }
     
     @Override
     public void onDisable() {
-        int file = 0;
         if (guiManager != null) guiManager.onDisable();
-        Bukkit.getScheduler().cancelTask(file);
+        if (dataUpdateTask != null) dataUpdateTask.cancel();
+        if (repricingTimeoutCheckTask != null) repricingTimeoutCheckTask.cancel();
+        AuctionProcess.stop();
         GlobalMarket.getMarket().saveData();
         if (PluginControl.useMySQLStorage()) {
             try {
@@ -117,32 +127,39 @@ public class Main
                 if (language.get("AutomaticBackupFailed") != null) getServer().getConsoleSender().sendMessage(language.getProperty("AutomaticBackupFailed").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
             }
         }
+        getScheduler().cancelTasks();
     }
 
-    private BukkitTask repricingTimeoutCheckTask;
-    private BukkitTask dataUpdateTask;
+    private IRunTask repricingTimeoutCheckTask;
+    private IRunTask dataUpdateTask;
     
     public void reloadTimer() {
-        final AtomicBoolean fault = new AtomicBoolean(false);
-        long dataUpdateInterval = (long)(PluginControl.getGlobalMarketAutomaticUpdateDelay() * 1000) / 50L;
         if (dataUpdateTask != null) dataUpdateTask.cancel();
         if (repricingTimeoutCheckTask != null) repricingTimeoutCheckTask.cancel();
-        dataUpdateTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
-            try {
-                PluginControl.updateCacheData();
-                if (fault.get()) {
-                    if (language.get("CacheUpdateReturnsToNormal") != null) getServer().getConsoleSender().sendMessage(language.getProperty("CacheUpdateReturnsToNormal").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
-                    fault.set(false);
+        if (PluginControl.isGlobalMarketAutomaticUpdate()) {
+            final AtomicBoolean fault = new AtomicBoolean(false);
+            long dataUpdateInterval = (long) (PluginControl.getGlobalMarketAutomaticUpdateDelay() * 1000) / 50L;
+            dataUpdateTask = getScheduler().runTaskTimerAsync(() -> {
+                try {
+                    PluginControl.updateCacheData();
+                    if (fault.get()) {
+                        if (language.get("CacheUpdateReturnsToNormal") != null)
+                            getServer().getConsoleSender().sendMessage(language.getProperty("CacheUpdateReturnsToNormal").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+                        fault.set(false);
+                    }
+                } catch (Exception ex) {
+                    if (language.get("CacheUpdateError") != null)
+                        getServer().getConsoleSender().sendMessage(language.getProperty("CacheUpdateError")
+                                .replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null")
+                                .replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+                    fault.set(true);
+                    PluginControl.printStackTrace(ex);
                 }
-            } catch (Exception ex) {
-                if (language.get("CacheUpdateError") != null) getServer().getConsoleSender().sendMessage(language.getProperty("CacheUpdateError")
-                        .replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null")
-                        .replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
-                fault.set(true);
-                PluginControl.printStackTrace(ex);
-            }
-        }, dataUpdateInterval, dataUpdateInterval);
-        repricingTimeoutCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            }, dataUpdateInterval, dataUpdateInterval);
+        } else {
+            dataUpdateTask = null;
+        }
+        repricingTimeoutCheckTask = getScheduler().runTaskTimerAsync(() -> {
             long now = System.currentTimeMillis();
             for (UUID uuid : Lists.newArrayList(GuiManager.repricing.keySet())) {
                 Object[] objects = GuiManager.repricing.get(uuid);

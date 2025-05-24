@@ -27,7 +27,7 @@ public class Join implements Listener {
             return;
         }
         if (!Files.CONFIG.getFile().getBoolean("Settings.Join-Message")) return;
-        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
+        plugin.getScheduler().runTaskLaterAsync(() -> {
             Storage data = Storage.getPlayer(player);
             if (data.getMailNumber() > 0) {
                 MessageUtil.sendMessage(player, "Email-of-player-owned-items");

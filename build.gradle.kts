@@ -26,6 +26,7 @@ dependencies {
     implementation("net.kyori:adventure-api:4.21.0")
     implementation("net.kyori:adventure-platform-bukkit:4.4.0")
     implementation("net.kyori:adventure-text-minimessage:4.21.0")
+    implementation("com.github.technicallycoded:FoliaLib:0.4.4")
     implementation("de.tr7zw:item-nbt-api:2.15.0")
 }
 
@@ -44,6 +45,7 @@ tasks {
         archiveClassifier.set("")
         mapOf(
             "de.tr7zw.changeme.nbtapi" to "nbtapi",
+            "com.tcoded.folialib" to "folialib",
             "net.kyori" to "kyori",
         ).forEach { (original, target) ->
             relocate(original, "$shadowGroup.$target")

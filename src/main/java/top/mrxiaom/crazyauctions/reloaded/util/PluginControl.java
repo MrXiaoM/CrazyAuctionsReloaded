@@ -17,7 +17,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -144,36 +143,7 @@ public class PluginControl
         AdventureItemStack.setItemLoreMiniMessage(item, lore);
         return item;
     }
-    
-    public static ItemStack makeItem(Material material, int amount, int type, String name) {
-        ItemStack item = makeItem(material, amount, type);
-        AdventureItemStack.setItemDisplayName(item, name);
-        return item;
-    }
-    
-    public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore) {
-        ItemStack item = makeItem(material, amount, type);
-        AdventureItemStack.setItemDisplayName(item, name);
-        AdventureItemStack.setItemLoreMiniMessage(item, lore);
-        return item;
-    }
-    
-    public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore, Map<Enchantment, Integer> enchants) {
-        ItemStack item = makeItem(material, amount, type);
-        AdventureItemStack.setItemDisplayName(item, name);
-        AdventureItemStack.setItemLoreMiniMessage(item, lore);
-        item.addUnsafeEnchantments(enchants);
-        return item;
-    }
-    
-    public static ItemStack addLore(ItemStack item, String i) {
-        if (item == null || item.getType().equals(Material.AIR)) return item;
-        List<Component> lore = AdventureItemStack.getItemLore(item);
-        lore.add(AdventureUtil.miniMessage(i));
-        AdventureItemStack.setItemLore(item, lore);
-        return item;
-    }
-    
+
     public static ItemStack addLore(ItemStack item, List<String> list) {
         if (item == null || item.getType().equals(Material.AIR)) return item;
         List<Component> lore = AdventureItemStack.getItemLore(item);
@@ -631,7 +601,7 @@ public class PluginControl
                             }
                             AuctionExpireEvent event = new AuctionExpireEvent(player, mg, ShopType.BUY);
 
-                            Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                            Main.getInstance().getScheduler().runTask(() -> {
                                 Bukkit.getPluginManager().callEvent(event);
                             });
                             CurrencyManager.addMoney(Bukkit.getOfflinePlayer(owner), mg.getReward());
@@ -648,7 +618,7 @@ public class PluginControl
                             }
                             AuctionExpireEvent event = new AuctionExpireEvent(player, mg, ShopType.SELL);
 
-                            Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                            Main.getInstance().getScheduler().runTask(() -> {
                                 Bukkit.getPluginManager().callEvent(event);
                             });
                             Storage playerdata = Storage.getPlayer(getOfflinePlayer(owner));

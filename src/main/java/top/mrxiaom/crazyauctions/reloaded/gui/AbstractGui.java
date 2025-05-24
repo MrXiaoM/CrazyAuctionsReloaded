@@ -37,7 +37,7 @@ public abstract class AbstractGui implements IGui {
     }
 
     protected void run(Runnable runnable) {
-        Bukkit.getScheduler().runTask(plugin, runnable);
+        plugin.getScheduler().runTask(runnable);
     }
 
     @Override
