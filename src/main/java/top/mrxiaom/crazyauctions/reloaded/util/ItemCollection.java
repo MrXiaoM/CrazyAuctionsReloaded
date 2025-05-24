@@ -34,7 +34,7 @@ public class ItemCollection
     
     public static boolean addItem(ItemStack item, String displayName) {
         if (displayName == null) return false;
-        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEMCOLLECTION.getFile();
+        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEM_COLLECTION.getFile();
         if (ic.get("ItemCollection") != null) {
             for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
                 if (ic.get("ItemCollection." + items + ".UID") != null && ic.get("ItemCollection." + items + ".Item") != null) {
@@ -50,24 +50,24 @@ public class ItemCollection
                 long uid = makeUID();
                 ic.set("ItemCollection." + displayName + ".UID", uid);
                 ic.set("ItemCollection." + displayName + ".Item", item);
-                FileManager.Files.ITEMCOLLECTION.saveFile();
+                FileManager.Files.ITEM_COLLECTION.saveFile();
                 return true;
             }
         } else {
             ic.set("ItemCollection." + displayName + ".UID", 1L);
             ic.set("ItemCollection." + displayName + ".Item", item);
-            FileManager.Files.ITEMCOLLECTION.saveFile();
+            FileManager.Files.ITEM_COLLECTION.saveFile();
             return true;
         }
     }
     
     public static void deleteItem(long uid) {
-        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEMCOLLECTION.getFile();
+        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEM_COLLECTION.getFile();
         if (ic.get("ItemCollection") != null) {
             for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
                 if (ic.get("ItemCollection." + items + ".UID") != null && ic.getLong("ItemCollection." + items + ".UID") == uid) {
                     ic.set("ItemCollection." + items, null);
-                    FileManager.Files.ITEMCOLLECTION.saveFile();
+                    FileManager.Files.ITEM_COLLECTION.saveFile();
                     return;
                 }
             }
@@ -76,12 +76,12 @@ public class ItemCollection
     
     public static void deleteItem(String displayName) {
         if (displayName == null) return;
-        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEMCOLLECTION.getFile();
+        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEM_COLLECTION.getFile();
         if (ic.get("ItemCollection") != null) {
             for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
                 if (items.equalsIgnoreCase(displayName)) {
                     ic.set("ItemCollection." + items, null);
-                    FileManager.Files.ITEMCOLLECTION.saveFile();
+                    FileManager.Files.ITEM_COLLECTION.saveFile();
                     return;
                 }
             }
@@ -90,7 +90,7 @@ public class ItemCollection
     
     public static long makeUID() {
         long id = 0;
-        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEMCOLLECTION.getFile();
+        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEM_COLLECTION.getFile();
         while (true) {
             id++;
             boolean b = false;
@@ -110,7 +110,7 @@ public class ItemCollection
     
     public static List<ItemCollection> getCollection() {
         List<ItemCollection> list = new ArrayList<>();
-        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEMCOLLECTION.getFile();
+        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEM_COLLECTION.getFile();
         if (ic.get("ItemCollection") != null) {
             for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
                 if (ic.get("ItemCollection." + items + ".UID") != null && ic.get("ItemCollection." + items + ".Item") != null) {
@@ -123,7 +123,7 @@ public class ItemCollection
     }
     
     public static ItemCollection getItemCollection(long uid) {
-        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEMCOLLECTION.getFile();
+        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEM_COLLECTION.getFile();
         if (ic.get("ItemCollection") != null) {
             for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
                 if (ic.get("ItemCollection." + items + ".UID") != null && ic.get("ItemCollection." + items + ".Item") != null) {
@@ -137,7 +137,7 @@ public class ItemCollection
     }
     
     public static ItemCollection getItemCollection(String displayName) {
-        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEMCOLLECTION.getFile();
+        FileManager.ProtectedConfiguration ic = FileManager.Files.ITEM_COLLECTION.getFile();
         if (ic.get("ItemCollection") != null) {
             for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
                 if (ic.get("ItemCollection." + items + ".UID") != null && ic.get("ItemCollection." + items + ".Item") != null) {

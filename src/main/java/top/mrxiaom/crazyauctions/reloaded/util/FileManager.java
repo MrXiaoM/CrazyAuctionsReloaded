@@ -22,7 +22,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +38,7 @@ import top.mrxiaom.crazyauctions.reloaded.database.engine.SQLiteEngine;
 import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
 import top.mrxiaom.crazyauctions.reloaded.util.enums.Version;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class FileManager {
     
     private static final FileManager instance = new FileManager();
@@ -49,9 +49,6 @@ public class FileManager {
     private String prefix = "[CrazyAuctionsReloaded] ";
     private Boolean log = false;
     private final HashMap<Files, File> files = new HashMap<>();
-    private final ArrayList<String> homeFolders = new ArrayList<>();
-    private final ArrayList<CustomFile> customFiles = new ArrayList<>();
-    private final HashMap<String, String> autoGenerateFiles = new HashMap<>();
     private final HashMap<Files, FileConfiguration> configurations = new HashMap<>();
 
     public static FileManager getInstance() {
@@ -504,7 +501,7 @@ public class FileManager {
     }
     
     public void reloadItemCollectionFile() {
-        Files file = Files.ITEMCOLLECTION;
+        Files file = Files.ITEM_COLLECTION;
         saveResource(file);
         File newFile = new File(main.getDataFolder(), file.getFileLocation());
         try (Reader Config = new InputStreamReader(java.nio.file.Files.newInputStream(newFile.toPath()), StandardCharsets.UTF_8)) {
@@ -550,7 +547,6 @@ public class FileManager {
             main.getDataFolder().mkdirs();
         }
         files.clear();
-        customFiles.clear();
         //Loads all the normal static files.
         for (Files file : Files.values()) {
             if (file.equals(Files.DATABASE)) {
@@ -603,49 +599,6 @@ public class FileManager {
                 if (Main.language.get("ConfigurationFileRepair") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("ConfigurationFileRepair").replace("{prefix}", prefix).replace("&", "§"));
             }
         }
-        //Starts to load all the custom files.
-        if (!homeFolders.isEmpty()) {
-            if (log) System.out.println(prefix + "Loading custom files.");
-            for (String homeFolder : homeFolders) {
-                File homeFile = new File(main.getDataFolder(), "/" + homeFolder);
-                if (homeFile.exists()) {
-                    String[] list = homeFile.list();
-                    if (list != null) {
-                        for (String name : list) {
-                            if (name.endsWith(".yml")) {
-                                CustomFile file = new CustomFile(name, homeFolder, main);
-                                if (file.exists()) {
-                                    customFiles.add(file);
-                                    if (log) System.out.println(prefix + "Loaded new custom file: " + homeFolder + "/" + name + ".");
-                                }
-                            }
-                        }
-                    }
-                    
-                } else {
-                    homeFile.mkdir();
-                    if (log) System.out.println(prefix + "The folder " + homeFolder + "/ was not found so it was created.");
-                    for (String fileName : autoGenerateFiles.keySet()) {
-                        if (autoGenerateFiles.get(fileName).equalsIgnoreCase(homeFolder)) {
-                            homeFolder = autoGenerateFiles.get(fileName);
-                            try {
-                                File serverFile = new File(main.getDataFolder(), homeFolder + "/" + fileName);
-                                InputStream jarFile = getClass().getResourceAsStream(homeFolder + "/" + fileName);
-                                saveFile(jarFile, serverFile);
-                                if (fileName.toLowerCase().endsWith(".yml")) {
-                                    customFiles.add(new CustomFile(fileName, homeFolder, main));
-                                }
-                                if (log) System.out.println(prefix + "Created new default file: " + homeFolder + "/" + fileName + ".");
-                            } catch (Exception e) {
-                                if (log) System.out.println(prefix + "Failed to create new default file: " + homeFolder + "/" + fileName + "!");
-                                PluginControl.printStackTrace(e);
-                            }
-                        }
-                    }
-                }
-            }
-            if (log) System.out.println(prefix + "Finished loading custom files.");
-        }
         return this;
     }
     
@@ -665,44 +618,7 @@ public class FileManager {
     public Boolean isLogging() {
         return log;
     }
-    
-    /**
-     * Register a folder that has custom files in it. Make sure to have a "/" in front of the folder name.
-     * @param homeFolder The folder that has custom files in it.
-     */
-    public FileManager registerCustomFilesFolder(String homeFolder) {
-        homeFolders.add(homeFolder);
-        return this;
-    }
-    
-    /**
-     * Unregister a folder that has custom files in it. Make sure to have a "/" in front of the folder name.
-     * @param homeFolder The folder with custom files in it.
-     */
-    public FileManager unregisterCustomFilesFolder(String homeFolder) {
-        homeFolders.remove(homeFolder);
-        return this;
-    }
-    
-    /**
-     * Register a file that needs to be generated when it's home folder doesn't exist. Make sure to have a "/" in front of the home folder's name.
-     * @param fileName The name of the file you want to auto-generate when the folder doesn't exist.
-     * @param homeFolder The folder that has custom files in it.
-     */
-    public FileManager registerDefaultGenerateFiles(String fileName, String homeFolder) {
-        autoGenerateFiles.put(fileName, homeFolder);
-        return this;
-    }
-    
-    /**
-     * Unregister a file that doesn't need to be generated when it's home folder doesn't exist. Make sure to have a "/" in front of the home folder's name.
-     * @param fileName The file that you want to remove from auto-generating.
-     */
-    public FileManager unregisterDefaultGenerateFiles(String fileName) {
-        autoGenerateFiles.remove(fileName);
-        return this;
-    }
-    
+
     /**
      * Gets the file from the system.
      * @return The file from the system.
@@ -710,22 +626,7 @@ public class FileManager {
     public FileConfiguration getFile(Files file) {
         return configurations.get(file);
     }
-    
-    /**
-     * Get a custom file from the loaded custom files instead of a hardcoded one.
-     * This allows you to get custom files like Per player data files.
-     * @param name Name of the crate you want. (Without the .yml)
-     * @return The custom file you wanted otherwise if not found will return null.
-     */
-    public CustomFile getFile(String name) {
-        for (CustomFile file : customFiles) {
-            if (file.getName().equalsIgnoreCase(name)) {
-                return file;
-            }
-        }
-        return null;
-    }
-    
+
     /**
      * Saves the file from the loaded state to the file system.
      */
@@ -737,76 +638,21 @@ public class FileManager {
             PluginControl.printStackTrace(e);
         }
     }
-    
-    /**
-     * Save a custom file.
-     * @param name The name of the custom file.
-     */
-    public void saveFile(String name) {
-        CustomFile file = getFile(name);
-        if (file != null) {
-            try {
-                file.getFile().save(new File(main.getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
-                if (log) System.out.println(prefix + "Successfuly saved the " + file.getFileName() + ".");
-            } catch (Exception e) {
-                System.out.println(prefix + "Could not save " + file.getFileName() + "!");
-                PluginControl.printStackTrace(e);
-            }
-        } else {
-            if (log) System.out.println(prefix + "The file " + name + ".yml could not be found!");
-        }
-    }
-    
-    /**
-     * Save a custom file.
-     * @param file The custom file you are saving.
-     * @return True if the file saved correct and false if there was an error.
-     */
-    public Boolean saveFile(CustomFile file) {
-        return file.saveFile();
-    }
-    
+
     /**
      * Overrides the loaded state file and loads the file systems file.
      */
     public void reloadFile(Files file) {
         configurations.put(file, YamlConfiguration.loadConfiguration(files.get(file)));
     }
-    
-    /**
-     * Overrides the loaded state file and loads the file systems file.
-     */
-    @Deprecated
-    public void reloadFile(String name) {
-        CustomFile file = getFile(name);
-        if (file != null) {
-            try {
-                file.file = YamlConfiguration.loadConfiguration(new File(main.getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
-                if (log) System.out.println(prefix + "Successfuly reload the " + file.getFileName() + ".");
-            } catch (Exception e) {
-                System.out.println(prefix + "Could not reload the " + file.getFileName() + "!");
-                PluginControl.printStackTrace(e);
-            }
-        } else {
-            if (log) System.out.println(prefix + "The file " + name + ".yml could not be found!");
-        }
-    }
-    
-    /**
-     * Overrides the loaded state file and loads the filesystems file.
-     * @return True if it reloaded correct and false if the file wasn't found.
-     */
-    public Boolean reloadFile(CustomFile file) {
-        return file.reloadFile();
-    }
-    
+
     public enum Files {
         
         //ENUM_NAME("FileName.yml", "FilePath.yml"),
         CONFIG("Config.yml", "Config.yml"),
         DATABASE("Database.yml", "Database.yml"),
         CATEGORY("Category.yml", "Category.yml"),
-        ITEMCOLLECTION("ItemCollection.yml", "ItemCollection.yml"),
+        ITEM_COLLECTION("ItemCollection.yml", "ItemCollection.yml"),
         MESSAGES("Messages.yml", "Messages.yml");
         
         private final String fileName;
@@ -852,7 +698,7 @@ public class FileManager {
         /**
          * Overrides the loaded state file and loads the file systems file.
          */
-        public void relaodFile() {
+        public void reloadFile() {
             getInstance().reloadFile(this);
         }
     }
@@ -880,80 +726,64 @@ public class FileManager {
             if (file.equals(Files.DATABASE)) return config.getString(path);
             if (config.get(path) == null) {
                 reset(path);
-                return config.getString(path);
-            } else {
-                return config.getString(path);
             }
+            return config.getString(path);
         }
         
         public int getInt(String path) {
             if (file.equals(Files.DATABASE)) return config.getInt(path);
             if (config.get(path) == null) {
                 reset(path);
-                return config.getInt(path);
-            } else {
-                return config.getInt(path);
             }
+            return config.getInt(path);
         }
         
         public double getDouble(String path) {
             if (file.equals(Files.DATABASE)) return config.getDouble(path);
             if (config.get(path) == null) {
                 reset(path);
-                return config.getDouble(path);
-            } else {
-                return config.getDouble(path);
             }
+            return config.getDouble(path);
         }
         
         public long getLong(String path) {
             if (file.equals(Files.DATABASE)) return config.getLong(path);
             if (config.get(path) == null) {
                 reset(path);
-                return config.getLong(path);
-            } else {
-                return config.getLong(path);
             }
+            return config.getLong(path);
         }
         
         public boolean getBoolean(String path) {
             if (file.equals(Files.DATABASE)) return config.getBoolean(path);
             if (config.get(path) == null) {
                 reset(path);
-                return config.getBoolean(path);
-            } else {
-                return config.getBoolean(path);
             }
+            return config.getBoolean(path);
         }
         
         public List<String> getStringList(String path) {
             if (file.equals(Files.DATABASE)) return config.getStringList(path);
             if (config.get(path) == null) {
                 reset(path);
-                return config.getStringList(path);
-            } else {
-                return config.getStringList(path);
             }
+            return config.getStringList(path);
         }
         
         public ItemStack getItemStack(String path) {
             if (file.equals(Files.DATABASE)) return config.getItemStack(path);
             if (config.get(path) == null) {
                 reset(path);
-                return config.getItemStack(path);
-            } else {
-                return config.getItemStack(path);
             }
+            return config.getItemStack(path);
         }
         
         public ConfigurationSection getConfigurationSection(String path) {
             if (file.equals(Files.DATABASE)) return config.getConfigurationSection(path);
             if (config.get(path) == null) {
                 reset(path);
-                return config.getConfigurationSection(path);
-            } else {
-                return config.getConfigurationSection(path);
             }
+            return config.getConfigurationSection(path);
         }
         
         public boolean contains(String path) {
@@ -1001,129 +831,6 @@ public class FileManager {
                     PluginControl.printStackTrace(ex);
                 }
             }
-        }
-    }
-    
-    @Deprecated
-    public class CustomFile {
-        
-        private final String name;
-        private final Main main;
-        private final String fileName;
-        private final String homeFolder;
-        private FileConfiguration file;
-        
-        /**
-         * A custom file that is being made.
-         * @param name Name of the file.
-         * @param homeFolder The home folder of the file.
-         * @param main The plugin the files belong to.
-         */
-        public CustomFile(String name, String homeFolder, Main main) {
-            this.name = name.replace(".yml", "");
-            this.main = main;
-            this.fileName = name;
-            this.homeFolder = homeFolder;
-            if (new File(main.getDataFolder(), "/" + homeFolder).exists()) {
-                if (new File(main.getDataFolder(), "/" + homeFolder + "/" + name).exists()) {
-                    file = YamlConfiguration.loadConfiguration(new File(main.getDataFolder(), "/" + homeFolder + "/" + name));
-                } else {
-                    file = null;
-                }
-            } else {
-                new File(main.getDataFolder(), "/" + homeFolder).mkdir();
-                if (log) System.out.println(prefix + "The folder " + homeFolder + "/ was not found so it was created.");
-                file = null;
-            }
-        }
-        
-        /**
-         * Get the name of the file without the .yml part.
-         * @return The name of the file without the .yml.
-         */
-        public String getName() {
-            return name;
-        }
-        
-        /**
-         * Get the full name of the file.
-         * @return Full name of the file.
-         */
-        public String getFileName() {
-            return fileName;
-        }
-        
-        /**
-         * Get the name of the home folder of the file.
-         * @return The name of the home folder the files are in.
-         */
-        public String getHomeFolder() {
-            return homeFolder;
-        }
-        
-        /**
-         * Get the plugin the file belongs to.
-         * @return The plugin the file belongs to.
-         */
-        public Main getPlugin() {
-            return main;
-        }
-        
-        /**
-         * Get the ConfigurationFile.
-         * @return The ConfigurationFile of this file.
-         */
-        public FileConfiguration getFile() {
-            return file;
-        }
-        
-        /**
-         * Check if the file actually exists in the file system.
-         * @return True if it does and false if it doesn't.
-         */
-        public Boolean exists() {
-            return file != null;
-        }
-        
-        /**
-         * Save the custom file.
-         * @return True if it saved correct and false if something went wrong.
-         */
-        public Boolean saveFile() {
-            if (file != null) {
-                try {
-                    file.save(new File(main.getDataFolder(), homeFolder + "/" + fileName));
-                    if (log) System.out.println(prefix + "Successfuly saved the " + fileName + ".");
-                    return true;
-                } catch (Exception e) {
-                    System.out.println(prefix + "Could not save " + fileName + "!");
-                    PluginControl.printStackTrace(e);
-                    return false;
-                }
-            } else {
-                if (log) System.out.println(prefix + "There was a null custom file that could not be found!");
-            }
-            return false;
-        }
-        
-        /**
-         * Overrides the loaded state file and loads the filesystems file.
-         * @return True if it reloaded correct and false if the file wasn't found or errored.
-         */
-        public Boolean reloadFile() {
-            if (file != null) {
-                try {
-                    file = YamlConfiguration.loadConfiguration(new File(main.getDataFolder(), "/" + homeFolder + "/" + fileName));
-                    if (log) System.out.println(prefix + "Successfuly reload the " + fileName + ".");
-                    return true;
-                } catch (Exception e) {
-                    System.out.println(prefix + "Could not reload the " + fileName + "!");
-                    PluginControl.printStackTrace(e);
-                }
-            } else {
-                if (log) System.out.println(prefix + "There was a null custom file that was not found!");
-            }
-            return false;
         }
     }
 }

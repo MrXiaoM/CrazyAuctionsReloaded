@@ -74,16 +74,6 @@ public class PluginControl
         return Files.CONFIG.getFile().getString("Settings.Prefix");
     }
     
-    @Deprecated
-    public static String getPrefix(String msg) {
-        return color(Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
-    }
-    
-    @Deprecated
-    public static String removeColor(String msg) {
-        return ChatColor.stripColor(msg);
-    }
-
     @SuppressWarnings({"deprecation"})
     public static ItemStack legacyItem(Material material, int amount, Integer ty) {
         if (material == null) {
@@ -251,24 +241,9 @@ public class PluginControl
             return null;
         }
     }
-    
-    @Deprecated
-    public static OfflinePlayer getOfflinePlayer(String name) {
-        return Bukkit.getServer().getOfflinePlayer(name);
-    }
-    
+
     public static OfflinePlayer getOfflinePlayer(UUID uuid) {
         return Bukkit.getOfflinePlayer(uuid);
-    }
-
-    @Deprecated
-    public static boolean isOnline(String name) {
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            if (player.getName().equalsIgnoreCase(name)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static boolean isOnline(UUID uuid) {
