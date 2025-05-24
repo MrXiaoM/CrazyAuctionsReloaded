@@ -40,7 +40,6 @@ import top.mrxiaom.crazyauctions.reloaded.database.market.YamlMarket;
 import top.mrxiaom.crazyauctions.reloaded.database.storage.MySQLStorage;
 import top.mrxiaom.crazyauctions.reloaded.database.storage.SQLiteStorage;
 import top.mrxiaom.crazyauctions.reloaded.database.storage.YamlStorage;
-import top.mrxiaom.crazyauctions.reloaded.util.AuctionProcess.AuctionUpdateThread;
 import top.mrxiaom.crazyauctions.reloaded.util.enums.Version;
 import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
 import top.mrxiaom.crazyauctions.reloaded.util.FileManager.*;
@@ -73,7 +72,7 @@ public class PluginControl
     public static String getPrefix() {
         return Files.CONFIG.getFile().getString("Settings.Prefix");
     }
-    
+
     @SuppressWarnings({"deprecation"})
     public static ItemStack legacyItem(Material material, int amount, Integer ty) {
         if (material == null) {
@@ -758,7 +757,7 @@ public class PluginControl
             switch (type) {
                 case ALL: {
                     fm.logInfo(true).setup(Main.getInstance());
-                    if (AuctionUpdateThread.thread != null) AuctionUpdateThread.thread.stop();
+                    AuctionProcess.stop();
                     if (PluginControl.useSplitDatabase()) {
                         boolean database_MySQL = false;
                         boolean database_SQLite = false;
@@ -816,15 +815,15 @@ public class PluginControl
                         YamlMarket.getInstance().reloadData();
                     }
                     if (Files.CONFIG.getFile().getBoolean("Settings.Auction-Process-Settings.Countdown-Tips.Enabled")) {
-                        new AuctionUpdateThread(Files.CONFIG.getFile().getDouble("Settings.Auction-Process-Settings.Countdown-Tips.Update-Delay")).start();
+                        AuctionProcess.start(Files.CONFIG.getFile().getDouble("Settings.Auction-Process-Settings.Countdown-Tips.Update-Delay"));
                     }
                     return true;
                 }
                 case CONFIG: {
-                    if (AuctionUpdateThread.thread != null) AuctionUpdateThread.thread.stop();
+                    AuctionProcess.stop();
                     fm.reloadConfig();
                     if (Files.CONFIG.getFile().getBoolean("Settings.Auction-Process-Settings.Countdown-Tips.Enabled")) {
-                        new AuctionUpdateThread(Files.CONFIG.getFile().getDouble("Settings.Auction-Process-Settings.Countdown-Tips.Update-Delay")).start();
+                        AuctionProcess.start(Files.CONFIG.getFile().getDouble("Settings.Auction-Process-Settings.Countdown-Tips.Update-Delay"));
                     }
                     return true;
                 }

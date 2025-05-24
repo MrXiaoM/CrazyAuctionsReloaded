@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+import top.mrxiaom.crazyauctions.reloaded.Main;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommand;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommandType;
 import top.mrxiaom.crazyauctions.reloaded.gui.GUI;
@@ -22,6 +23,7 @@ public class ReloadCommand
         if (args.length == 1) {
             PluginControl.reload(PluginControl.ReloadType.ALL);
             GUI.closeAllGui();
+            Main.getInstance().reloadTimer();
             MessageUtil.sendMessage(sender, "Reload");
         } else if (args.length >= 2) {
             if (args[1].equalsIgnoreCase("database")) {
@@ -61,6 +63,8 @@ public class ReloadCommand
                 MessageUtil.sendMessage(sender, "Reload-ItemCollection");
             } else {
                 PluginControl.reload(PluginControl.ReloadType.ALL);
+                GUI.closeAllGui();
+                Main.getInstance().reloadTimer();
                 MessageUtil.sendMessage(sender, "Reload");
             }
         }

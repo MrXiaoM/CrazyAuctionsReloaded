@@ -2,18 +2,18 @@ package top.mrxiaom.crazyauctions.reloaded;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
+import org.bukkit.scheduler.BukkitTask;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsCommand;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommandType;
 import top.mrxiaom.crazyauctions.reloaded.currency.Vault;
@@ -28,9 +28,6 @@ import top.mrxiaom.crazyauctions.reloaded.util.*;
 public class Main
     extends JavaPlugin 
 {
-    public static FileManager fileManager = FileManager.getInstance();
-    public static CrazyAuctions crazyAuctions = CrazyAuctions.getInstance();
-    
     public static Main main;
     public static Properties language = new Properties();
     
@@ -73,21 +70,15 @@ public class Main
             return;
         }
         PluginManager pm = Bukkit.getPluginManager();
-        pm.registerEvents(new Join(), this);
+        pm.registerEvents(new Join(this), this);
         pm.registerEvents(new Quit(), this);
-        pm.registerEvents(new GuiManager(this), this);
         pm.registerEvents(new EasyCommand(), this);
         pm.registerEvents(new ShopSign(), this);
         pm.registerEvents(new AuctionEvents(), this);
         registerCommandExecutor();
-        startCheck();
+        reloadTimer();
         if (language.get("PluginEnabledSuccessfully") != null) getServer().getConsoleSender().sendMessage(language.getProperty("PluginEnabledSuccessfully").replace("{time}", String.valueOf(System.currentTimeMillis() - time)).replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Vault.setupEconomy();
-            }
-        }.runTask(this);
+        Bukkit.getScheduler().runTask(this, Vault::setupEconomy);
     }
     
     @Override
@@ -116,7 +107,6 @@ public class Main
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        asyncRun = false;
         if (PluginControl.automaticBackup()) {
             try {
                 if (language.get("AutomaticBackupStarting") != null) getServer().getConsoleSender().sendMessage(language.getProperty("AutomaticBackupStarting").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
@@ -127,61 +117,48 @@ public class Main
             }
         }
     }
+
+    private BukkitTask repricingTimeoutCheckTask;
+    private BukkitTask dataUpdateTask;
     
-    private boolean asyncRun = true;
-    private Thread RepricingTimeoutCheckThread;
-    private Thread DataUpdateThread;
-    
-    private void startCheck() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                DataUpdateThread = new Thread(() -> {
-                    boolean fault = false;
-                    while (asyncRun && PluginControl.isGlobalMarketAutomaticUpdate()) {
-                        try {
-                            Thread.sleep((long) (PluginControl.getGlobalMarketAutomaticUpdateDelay() * 1000));
-                            PluginControl.updateCacheData();
-                            if (fault) {
-                                if (language.get("CacheUpdateReturnsToNormal") != null) getServer().getConsoleSender().sendMessage(language.getProperty("CacheUpdateReturnsToNormal").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
-                                fault = false;
-                            }
-                        } catch (Exception ex) {
-                            if (language.get("CacheUpdateError") != null) getServer().getConsoleSender().sendMessage(language.getProperty("CacheUpdateError")
-                                    .replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null")
-                                    .replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
-                            fault = true;
-                            PluginControl.printStackTrace(ex);
-                        }
-                    }
-                });
-                DataUpdateThread.start();
-                RepricingTimeoutCheckThread = new Thread(() -> {
-                    while (asyncRun) {
-                        for (UUID uuid : Lists.newArrayList(GuiManager.repricing.keySet())) {
-                            Object[] objects = GuiManager.repricing.get(uuid);
-                            long outdateTime = Long.parseLong(objects[1].toString());
-                            try {
-                                MarketGoods mg  = (MarketGoods) objects[0];
-                                Player p = Bukkit.getPlayer(uuid);
-                                if (p != null) {
-                                    Map<String, String> placeholders = new HashMap<>();
-                                    placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
-                                    MessageUtil.sendMessage(p, "Repricing-Undo", placeholders);
-                                }
-                                GuiManager.repricing.remove(uuid);
-                            } catch (ClassCastException ignored) {}
-                        }
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                });
-                RepricingTimeoutCheckThread.start();
+    public void reloadTimer() {
+        final AtomicBoolean fault = new AtomicBoolean(false);
+        long dataUpdateInterval = (long)(PluginControl.getGlobalMarketAutomaticUpdateDelay() * 1000) / 50L;
+        if (dataUpdateTask != null) dataUpdateTask.cancel();
+        if (repricingTimeoutCheckTask != null) repricingTimeoutCheckTask.cancel();
+        dataUpdateTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            try {
+                PluginControl.updateCacheData();
+                if (fault.get()) {
+                    if (language.get("CacheUpdateReturnsToNormal") != null) getServer().getConsoleSender().sendMessage(language.getProperty("CacheUpdateReturnsToNormal").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+                    fault.set(false);
+                }
+            } catch (Exception ex) {
+                if (language.get("CacheUpdateError") != null) getServer().getConsoleSender().sendMessage(language.getProperty("CacheUpdateError")
+                        .replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null")
+                        .replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+                fault.set(true);
+                PluginControl.printStackTrace(ex);
             }
-        }.runTask(this);
+        }, dataUpdateInterval, dataUpdateInterval);
+        repricingTimeoutCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            long now = System.currentTimeMillis();
+            for (UUID uuid : Lists.newArrayList(GuiManager.repricing.keySet())) {
+                Object[] objects = GuiManager.repricing.get(uuid);
+                long outdateTime = Long.parseLong(objects[1].toString());
+                if (now >= outdateTime) continue;
+                try {
+                    MarketGoods mg  = (MarketGoods) objects[0];
+                    Player p = Bukkit.getPlayer(uuid);
+                    if (p != null) {
+                        Map<String, String> placeholders = new HashMap<>();
+                        placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
+                        MessageUtil.sendMessage(p, "Repricing-Undo", placeholders);
+                    }
+                    GuiManager.repricing.remove(uuid);
+                } catch (ClassCastException ignored) {}
+            }
+        }, 20L, 20L);
     }
     
     private void registerCommandExecutor() {

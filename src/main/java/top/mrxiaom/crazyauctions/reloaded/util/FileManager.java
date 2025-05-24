@@ -57,7 +57,7 @@ public class FileManager {
 
     private static CommandSender[] syncSenders = {};
     
-    public static Runnable synchronizeThread = () -> {
+    public static Runnable synchronizeRunnable = () -> {
         syncing = true;
         
         // Old Data Files
@@ -182,7 +182,7 @@ public class FileManager {
     
     private static CommandSender[] backupSenders = {};
     
-    public static Runnable backupThread = () -> {
+    public static Runnable backupRunnable = () -> {
         try {
             doingBackup = true;
             String fileName = MessageUtil.getValue("Admin-Command.Backup.Backup-Name").replace("%date%", new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date())) + ".db";
@@ -298,7 +298,7 @@ public class FileManager {
      */
     public static void synchronize(CommandSender... sender) {
         syncSenders = sender;
-        new Thread(synchronizeThread, "SynchronizeThread").start();
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), synchronizeRunnable);
     }
     
     /**
@@ -306,7 +306,7 @@ public class FileManager {
      */
     public static void backup(CommandSender... sender) {
         backupSenders = sender;
-        new Thread(backupThread, "BackupThread").start();
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), backupRunnable);
     }
     
     public static boolean isBackingUp() {

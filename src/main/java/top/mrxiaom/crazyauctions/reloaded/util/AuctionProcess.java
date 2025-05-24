@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import org.bukkit.scheduler.BukkitTask;
 import top.mrxiaom.crazyauctions.reloaded.Main;
 import top.mrxiaom.crazyauctions.reloaded.api.events.AuctionWinBidEvent;
 import top.mrxiaom.crazyauctions.reloaded.currency.CurrencyManager;
@@ -17,8 +18,28 @@ import top.mrxiaom.crazyauctions.reloaded.database.GlobalMarket;
 import top.mrxiaom.crazyauctions.reloaded.database.Storage;
 import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
 
-public class AuctionProcess
-{
+public class AuctionProcess {
+    private static BukkitTask task;
+
+    public static void stop() {
+        if (task != null) {
+            task.cancel();
+            task = null;
+        }
+    }
+
+    public static void start(double updateDelay) {
+        stop();
+        long interval = (long)(updateDelay * 1000L) / 50L;
+        task = Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), () -> {
+            try {
+                updateAuctionData();
+            } catch (Exception ex) {
+                PluginControl.printStackTrace(ex);
+            }
+        }, interval, interval);
+    }
+
     public static void updateAuctionData() {
         if (FileManager.isBackingUp()) return;
         if (FileManager.isRollingBack()) return;
@@ -98,34 +119,6 @@ public class AuctionProcess
                             }
                         }
                     }
-                }
-            }
-        }
-    }
-    
-    public static class AuctionUpdateThread extends Thread {
-        
-        public static AuctionUpdateThread thread;
-        
-        private final double updateDelay;
-        
-        public AuctionUpdateThread(double updateDelay) {
-            this.updateDelay = updateDelay;
-            thread = AuctionUpdateThread.this;
-        }
-        
-        public double getUpdateDelay() {
-            return updateDelay;
-        }
-        
-        @Override
-        public void run() {
-            while (true) {
-                try {
-                    sleep((long) (updateDelay * 1000));
-                    updateAuctionData();
-                } catch (Exception ex) {
-                    PluginControl.printStackTrace(ex);
                 }
             }
         }
