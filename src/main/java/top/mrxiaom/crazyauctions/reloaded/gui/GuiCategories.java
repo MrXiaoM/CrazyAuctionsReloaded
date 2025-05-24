@@ -48,7 +48,6 @@ public class GuiCategories extends AbstractGui {
             }
             addStandardIcon(config, inventory, "Settings.GUISettings." + o, o);
         }
-        player.openInventory(inventory);
     }
 
     @Override
