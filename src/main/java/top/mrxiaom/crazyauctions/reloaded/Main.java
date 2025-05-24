@@ -159,10 +159,12 @@ public class Main
                         fault.set(false);
                     }
                 } catch (Exception ex) {
-                    if (language.get("CacheUpdateError") != null)
+                    if (language.get("CacheUpdateError") != null) {
                         getServer().getConsoleSender().sendMessage(language.getProperty("CacheUpdateError")
                                 .replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null")
                                 .replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+                        getLogger().log(Level.WARNING, null, ex);
+                    }
                     fault.set(true);
                     PluginControl.printStackTrace(ex);
                 }
