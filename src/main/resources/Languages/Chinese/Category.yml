@@ -1,0 +1,133 @@
+#默认分类模块
+Default-Category: 无
+
+#分类模块列表
+Category:
+    #分类模块的名字，可以自定义
+    无: 
+        #是否启用白名单，启用后在集合中的物品将属于此分类，不启用反之
+        Whitelist: false
+        #分类模块的显示名称
+        Display-Name: '&3&l无商品分类'
+        #物品列表
+        Items: []
+        #分类模块，填写其他分类的名字即可使用它们的物品集合
+        Modules: []
+        #收藏夹的物品， 在这里写上对应的物品名称或UID即可添加到分类中
+        #关于物品收藏夹， 请使用命令/Ca Admin ItemCollection Help 查看帮助
+        #例如: "- 'SuperDiamondSword'" 或 "- 1" (1为SuperDiamondSword的UID)
+        #反向白名单对此功能无效.
+        Item-Collection: []
+        #通过反射org.bukkit.Material获取相关布尔值
+        #如果你不熟悉编写Bukkit插件，请不要随意修改它！
+        Reflection-boolean:
+            Enabled: false
+            Methods: []
+    其他:
+        Whitelist: false
+        Display-Name: '&6&l其他'
+        Items: []
+        Modules: 
+            - 盔甲
+            - 武器
+            - 工具
+            - 食物
+            - 药水
+            - 方块
+    盔甲:
+        Whitelist: true
+        Display-Name: '&b&l盔甲'
+        Modules: []
+        Items: 
+            - GOLDEN_HELMET
+            - GOLDEN_CHESTPLATE
+            - GOLDEN_LEGGINGS
+            - GOLDEN_BOOTS
+            - DIAMOND_HELMET
+            - DIAMOND_CHESTPLATE
+            - DIAMOND_LEGGINGS
+            - DIAMOND_BOOTS
+            - CHAINMAIL_HELMET
+            - CHAINMAIL_CHESTPLATE
+            - CHAINMAIL_LEGGINGS
+            - CHAINMAIL_BOOTS
+            - IRON_HELMET
+            - IRON_CHESTPLATE
+            - IRON_LEGGINGS
+            - IRON_BOOTS
+    武器:
+        Whitelist: true
+        Display-Name: '&c&l武器'
+        Modules: []
+        Items: 
+            - WOODEN_SWORD
+            - STONE_SWORD
+            - IRON_SWORD
+            - GOLDEN_SWORD
+            - DIAMOND_SWORD
+            - WOODEN_AXE
+            - STONE_AXE
+            - IRON_AXE
+            - GOLDEN_AXE
+            - DIAMOND_AXE
+            - BOW
+            - TRIDENT
+            - CROSSBOW
+    工具:
+        Whitelist: true
+        Display-Name: '&d&l工具'
+        Modules: []
+        Items: 
+            - WOODEN_PICKAXE
+            - WOODEN_AXE
+            - WOODEN_SHOVEL
+            - WOODEN_HOE
+            - GOLDEN_PICKAXE
+            - GOLDEN_AXE
+            - GOLDEN_SHOVEL
+            - GOLDEN_HOE
+            - STONE_SHOVEL
+            - IRON_SHOVEL
+            - DIAMOND_SHOVEL
+            - STONE_PICKAXE
+            - IRON_PICKAXE
+            - DIAMOND_PICKAXE
+            - STONE_AXE
+            - IRON_AXE
+            - DIAMOND_AXE
+            - STONE_HOE
+            - IRON_HOE
+            - DIAMOND_HOE
+    食物:
+        Whitelist: true
+        Display-Name: '&a&l食物'
+        Modules: []
+        Items: []
+        Reflection-boolean:
+            Enabled: true
+            Methods:
+                - 'isEdible'
+    药水:
+        Whitelist: true
+        Display-Name: '&5&l药水'
+        Modules: []
+        Items: 
+            - POTION
+            - SPLASH_POTION
+            - LINGERING_POTION
+    方块:
+        Whitelist: true
+        Display-Name: '&2&l方块'
+        Modules: []
+        Items: []
+        Reflection-boolean:
+            Enabled: true
+            Methods:
+                - 'isBlock'
+   #MMO:
+   #    WhiteList: true
+   #    Display-Name: '&4&lMMO RPG'
+   #    Modules: []
+   #    Items: []
+   #    Item-Collection: 
+   #        - 'SuperDiamondSword'

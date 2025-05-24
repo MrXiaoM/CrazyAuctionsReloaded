@@ -1,0 +1,814 @@
+Settings: 
+    Prefix: '&6&lCrazyAuctionsPlus &f&l>>> '
+    Main-GUIName: '&8&l全球市场&c&l'
+    Sell-GUIName: '&8&l全球市场 | &b&l出售&c&l'
+    Buy-GUIName: '&8&l全球市场 | &d&l收购&c&l'
+    Bid-GUIName: '&8&l全球市场 | &5&l拍卖&c&l'
+    Player-Items-List: '&8&l你的所有商品'
+    Player-Items-Mail: '&8&l收件箱&c&l' 
+    Player-Viewer-GUIName: '&8&l正在查看其他玩家的商品&c&l'
+    Buying-Item: '&8是否确认&b&l购买&8这个物品？' 
+    Selling-Item: '&8是否确认&d&l出售&8你的物品？' 
+    Bidding-On-Item: '&8你正在&c&l竞拍&8此商品' 
+    Categories: '&8&l分类功能' 
+    Language: Chinese
+    Sell-Time: 10d
+    Buy-Time: 10d
+    Bid-Time: 2m
+    Full-Expire-Time: 15d
+    Minimum-Sell-Price: 0.1
+    Max-Beginning-Sell-Price: 1000000
+    Minimum-Buy-Reward: 0.1
+    Max-Beginning-Buy-Reward: 1000000
+    Minimum-Bid-Price: 1
+    Max-Beginning-Bid-Price: 1000000
+    #数据库下载文件相关设置
+    Download:
+        Market: 'plugins/CrazyAuctionsPlus/Download/全球市场-%date%.yml'
+        PlayerData: 'plugins/CrazyAuctionsPlus/Download/Player/%player%-%uuid%.yml'
+    #数据库上传文件相关设置
+    Upload:
+        Market: 'plugins/CrazyAuctionsPlus/Database.yml'
+        PlayerData: 'plugins/CrazyAuctionsPlus/Player/%uuid%.yml'
+    #是否启用自动备份， 每一次关闭服务器时都会自动备份一次储存数据
+    Automatic-Backup: false
+    #全球市场自动刷新
+    #PS: 默认情况下， 玩家每一次打开市场都会刷新一次数据
+    #    如果你选择的储存方式是SQLite，我们不建议你启用这个功能
+    Global-Market-Automatic-Update:
+        Enabled: true
+        #刷新间隔时间（秒，可以有小数）
+        Update-Delay: 5
+    #重定价超时时间（秒）
+    Repricing-Timeout: 30
+    #是否在玩家发起新拍卖时向服务器里所有玩家发送信息提示
+    Auction-Starts-Broadcast: true
+    #是否在玩家登入的时候提示是否有新的物品邮件
+    Join-Message: true
+    #是否允许损坏的物品上架
+    Allow-Damaged-Items: false
+    #是否在使用主命令时，打开的是商品筛选界面而不是市场主界面
+    Category-Page-Opens-First: false
+    #收购物品时，是否匹配买家物品和卖家的物品NBT是否一致
+    #如果该选项关闭，双方物品仅需材质一致即可达成交易
+    Item-NBT-comparison: true
+    Feature-Toggle:
+        Selling: true
+        Bidding: true
+        Buying: true
+    #禁止使用本插件功能的世界
+    Disabled-Worlds:
+    - exampleworld
+    #MySQL 数据库设置
+    MySQL-Storage:
+        Enabled: false
+        #主机名
+        Hostname: localhost
+        #端口
+        Port: 3306
+        #用户名
+        Username: 'root'
+        #密码
+        Password: 'password'
+        #数据库名称
+        Database: 'crazyauctionsplus'
+        #更多连接参数，如果你不是一名开发者，并且不熟知JDBC，请不要修改它
+        Parameter: '?useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8'
+        #当数据库连接丢失时，自动修复的次数， 填-1即为无数次
+        Automatic-Repair: -1
+        #数据重新获取
+        #如果你有多个服务器正在使用同一个MySQL，建议启用它以保障数据实时同步
+        Data-Reacquisition:
+            #市场的数据
+            Market: true
+            #玩家邮箱
+            Item-Mail: true
+            #间隔时间（秒，可以有小数）
+            Delay: 0
+        #数据表名称
+        Table-Name: 
+            #市场
+            Market: market
+            #玩家的物品邮箱
+            Item-Mail: itemMail
+    #SQLite 数据库设置
+    SQLite-Storage:
+        Enabled: false
+        #数据库文件
+        Database-File: 'Database.db'
+        #数据库文件夹路径
+        Database-Path: 'plugins/CrazyAuctionsPlus/'
+        #当数据库发生故障时，自动修复的次数， 填-1即为无数次
+        Automatic-Repair: 3
+        #数据重新获取
+        Data-Reacquisition:
+            #市场的数据
+            Market: false
+            #玩家邮箱
+            Item-Mail: false
+            #间隔时间（秒，可以有小数）
+            Delay: 5
+        #数据表名称
+        Table-Name: 
+            #市场
+            Market: market
+            #玩家的物品邮箱
+            Item-Mail: itemMail
+    #分裂数据库
+    #使不同的储存对象在不同类型的数据库上进行储存
+    #可选： YAML（.yml）、MySQL、SQlite（.db）
+    Split-Database:
+        Enabled: false
+        #全球市场
+        Market: MySQL
+        #玩家邮箱
+        Item-Mail: MySQL
+    Sounds:
+        Toggle: true
+        Sound: 'UI_BUTTON_CLICK'
+        #可用声音的列表: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+    #物品黑名单（以下物品禁止上架到市场）
+    BlackList:
+    - 'BEDROCK'
+    - 'END_PORTAL_FRAME'
+    #标签黑名单（包含此标签的物品禁止上架到市场）
+    Lore-Blacklist:
+    - '已绑定'
+    #告示牌商店
+    #当玩家点击告示牌时打开指定玩家的个人商品界面的功能
+    Shop-Sign:
+        #是否启用
+        Enabled: true
+        #告示牌的格式
+        #该文字格式用于牌子的第一行
+        #放置牌子， 在第一行写上该格式，第二行写上玩家的名字
+        #即可通过右键牌子打开指定玩家的商店
+        Title-Format: '[牌子商店]'
+    #简易命令， 当玩家输入指定命令时自动替换成其他命令
+    Easy-Commands:
+        Enabled: true
+        Commands:
+            #格式 '自定义命令': '目标命令'
+            'shop': 'ca gui'
+            'market': 'ca gui'
+            'ah': 'ca gui'
+            'hdv': 'ca gui'
+    #拍卖流程设置
+    Auction-Process-Settings:
+        #发起拍卖时
+        Starting:
+            #是否在玩家发起新拍卖时向服务器里所有玩家发送信息提示
+            Enabled: true
+            Messages:
+                - '{prefix}&a玩家 &e%player% &a以 &e%money% ￥&a的价格发起了物品 &r%item% &a的拍卖， 输入&e/Ca Gui Bid &a加入竞标！'
+        #竞标提示
+        Bidding:
+            Enabled: true
+            #提示信息（可以多行）
+            Messages: 
+                - '{prefix}&a玩家 &e%bidder% &a以 &e%price% ￥&a的价格对 &r%item% &a发起竞标！ &7（输入/ca gui bid加入竞标）'
+        #拍卖加时
+        Bid-Overtime:
+            Enabled: false
+            #时间列表（可自定义， 单位秒）
+            Times:
+                #剩余不到60秒时竞标可触发
+                60:
+                    #加时的时长（单位秒，可以有小数）
+                    Overtime: 120
+                    Messages: 
+                       - '{prefix}&a玩家 &e%bidder% &a在剩余不到一分钟的情况下对拍卖商品 &r%item% &a发出竞标！ 因此加时两分钟！ &7（输入/ca gui bid加入竞标）'
+        #倒计时提示
+        Countdown-Tips:
+            Enabled: true
+            #更新延迟（不推荐改成1以外的数字，可能会导致一些特定时间无法被检测到）
+            Update-Delay: 1 
+            #时间列表（可自定义， 单位秒）
+            Times:
+                #剩余90秒，以此类推
+                90:
+                - '{prefix}&a玩家 &e%owner% &a的拍卖商品 &r%item% &a还有&c90秒&a就要宣布成交了， 输入&e/ca gui bid&a以加入竞标！'
+                60:
+                - '{prefix}&a玩家 &e%owner% &a的拍卖商品 &r%item% &a还有&c60秒&a就要宣布成交了， 输入&e/ca gui bid&a以加入竞标！'
+                30:
+                - '{prefix}&a玩家 &e%owner% &a的拍卖商品 &r%item% &a还有&c30秒&a就要宣布成交了， 输入&e/ca gui bid&a以加入竞标！'
+                10:
+                - '{prefix}&a玩家 &e%owner% &a的拍卖商品 &r%item% &a还有&c10秒&a就要宣布成交了， 输入&e/ca gui bid&a以加入竞标！'
+        #拍卖收尾提示
+        Ending:
+            Enabled: true
+            #提示信息（可以多行）
+            Messages: 
+                - '{prefix}&a玩家 &e%bidder% &a最终以最高价 &c%price% ￥&a赢得了商品 &r%item% &a的竞拍！ 祝贺他！'
+    GUISettings:
+        Auction-Settings:
+            Top-Bidder:
+                Item: 'BARRIER'
+                Name: '&c你已经是最高价格的竞拍人了.'
+            Bidding:
+                Item: 'LIGHT_BLUE_STAINED_GLASS_PANE'
+                Name: '&6拍卖功能'
+                Lore:
+                - ''
+                - '&7<▬▬&a&l加价 &c&l减价&7▬▬>'
+                - '&9你的拍卖价格: &e$%bid%'
+                - '&9最高拍卖价格: &e$%topbid%'
+            Bid:
+                Item: 'GOLD_BLOCK'
+                Name: '&e&l确认竞拍'
+                Lore:
+                - ''
+                - '&e点此处开始竞拍你的商品.'
+            #竞拍加减价的按钮
+            Bidding-Buttons:
+                #可以根据以下格式自定义
+                1:
+                    Item: LIME_STAINED_GLASS_PANE
+                    Name: '&a+1'
+                    Slot: 9
+                10:
+                    Item: LIME_STAINED_GLASS_PANE
+                    Name: '&a+10'
+                    Slot: 10
+                100:
+                    Item: LIME_STAINED_GLASS_PANE
+                    Name: '&a+100'
+                    Slot: 11
+                1000:
+                    Item: LIME_STAINED_GLASS_PANE
+                    Name: '&a+1000'
+                    Slot: 12
+                -1:
+                    Item: RED_STAINED_GLASS_PANE
+                    Name: '&c-1'
+                    Slot: 14
+                -10:
+                    Item: RED_STAINED_GLASS_PANE
+                    Name: '&c-10'
+                    Slot: 15
+                -100:
+                    Item: RED_STAINED_GLASS_PANE
+                    Name: '&c-100'
+                    Slot: 16
+                -1000:
+                    Item: RED_STAINED_GLASS_PANE
+                    Name: '&c-1000'
+                    Slot: 17
+        Category-Settings:
+            #GUI界面的大小
+            GUI-Size: 45
+            ShopType-Category:
+                Selling:
+                    Item: 'LIGHT_BLUE_WOOL'
+                    Toggle: true
+                    Slot: 29
+                    Name: '&b&l出售'
+                    Lore:
+                    - ''
+                    - '&e这个分类包含了市场所有的出售中的商品'
+                Buying:
+                    Item: 'MAGENTA_WOOL'
+                    Toggle: true
+                    Slot: 31
+                    Name: '&d&l收购'
+                    Lore:
+                    - ''
+                    - '&e这个分类包含了市场所有的收购中的商品'
+                Bidding:
+                    Item: 'PURPLE_WOOL'
+                    Toggle: true
+                    Slot: 33
+                    Name: '&5&l拍卖'
+                    Lore:
+                    - ''
+                    - '&e这个分类包含了市场所有的拍卖中的商品'
+                None:
+                    Item: 'LIME_WOOL'
+                    Toggle: true
+                    Slot: 35
+                    Name: '&a&l无商店分类'
+                    Lore:
+                    - ''
+                    - '&e这个分类包含了市场所有类型的商品'
+            Custom-Category:
+                #可按照以下格式进行自定义自定义
+                Armor:
+                    Item: 'DIAMOND_CHESTPLATE'
+                    Toggle: true
+                    Category-Module: 盔甲
+                    Slot: 11
+                    Name: '&b&l盔甲'
+                    Lore:
+                    - ''
+                    - '&e这个分类包含了市场所有的盔甲'
+                Weapons:
+                    Item: 'DIAMOND_SWORD'
+                    Toggle: true
+                    Category-Module: 武器
+                    Slot: 12
+                    Name: '&c&l武器'
+                    Lore:
+                    - ''
+                    - '&e这个分类包含了市场所有的武器'
+                Tools:
+                    Item: 'DIAMOND_PICKAXE'
+                    Toggle: true
+                    Category-Module: 工具
+                    Slot: 13
+                    Name: '&d&l工具'
+                    Lore:
+                    - ''
+                    - '&e这个分类包含了市场所有的工具'
+                Food:
+                    Item: 'ENCHANTED_GOLDEN_APPLE'
+                    Toggle: true
+                    Category-Module: 食物
+                    Slot: 14
+                    Name: '&a&l食物'
+                    Lore:
+                    - ''
+                    - '&e这个分类包含了市场所有的食物'
+                Potions:
+                    Item: 'POTION'
+                    Toggle: true
+                    Category-Module: 药水
+                    Slot: 15
+                    Name: '&5&l药水'
+                    Lore:
+                    - ''
+                    - '&e这个分类包含了市场所有的药水'
+                Blocks:
+                    Item: 'GRASS_BLOCK'
+                    Toggle: true
+                    Category-Module: 方块
+                    Slot: 16
+                    Name: '&2&l方块'
+                    Lore:
+                    - ''
+                    - '&e这个分类包含了市场所有的方块'
+                Other:
+                    Item: 'LAVA_BUCKET'
+                    Toggle: true
+                    Category-Module: 其他
+                    Slot: 17
+                    Name: '&7&l其它'
+                    Lore:
+                    - ''
+                    - '&e这个分类包含了其它所有的商品'
+                None:
+                    Item: 'COMPASS'
+                    Toggle: true
+                    Category-Module: 无
+                    Slot: 23
+                    Name: '&3&l无商品分类'
+                    Lore:
+                    - ''
+                    - '&e这个分类包含了市场所有的商品'
+        OtherSettings:
+            # GUI界面的每页元素位置
+            Content-Slots:
+                - '#########'
+                - '#########'
+                - '#########'
+                - '#########'
+                - '#########'
+                - '         '
+            Mail-Slots:
+                - '#########'
+                - '#########'
+                - '#########'
+                - '#########'
+                - '#########'
+                - '         '
+            Commoditys:
+                Item: 'DIAMOND'
+                Toggle: true
+                Slot: 47
+                Name: '&6你的商品'
+                Lore: 
+                - ''
+                - '&a点击查看你当前所有的商品'
+            Items-Mail:
+                Item: 'ENDER_CHEST'
+                Toggle: true
+                Slot: 48
+                Name: '&6收件箱'
+                Lore:
+                - ''
+                - '&e点击查看你已经撤销或者已过期的商品'
+            PreviousPage:
+                Item: 'PAPER'
+                Toggle: true
+                Slot: 49
+                Name: '&6上一页'
+                Lore: {}
+            Refesh:
+                Item: 'SUNFLOWER'
+                Toggle: true
+                Slot: 50
+                Name: '&6刷新'
+                Lore: {}
+            NextPage:
+                Item: 'PAPER'
+                Toggle: true
+                Slot: 51
+                Name: '&6下一页'
+                Lore: {}
+            Category:
+                Item: 'CHEST'
+                Toggle: true
+                Slot: 52
+                Name: '&6&l分类功能'
+                Lore:
+                - ''
+                - '&b&l当前分类: &6%category%'
+                - ''
+                - '&e点击查看所有分类'
+            Custom:
+                Item: 'COMPASS'
+                Toggle: true
+                Slot: 46
+                Close: false
+                Name: '&c返回主菜单'
+                Lore:
+                - ''
+                - '&e点击返回主菜单'
+                #命令格式: '[执行对象]:[命令]'
+                #示例:
+                # - 'server:say hello' 由控制台执行.
+                # - 'player:say hello' 由玩家执行.
+                # - 'message:嘻嘻'     在玩家视角显示聊天消息.
+                #变量: %player% = 玩家名字, %player_uuid% 玩家UUID
+                #支持使用PAPI变量
+                Commands:
+                - 'server:dm open menu %player%'
+            Shopping:
+                Others:
+                    Item: 'LIME_WOOL'
+                    Toggle: true
+                    Slot: 53
+                    Name: '&6当前正在查看 &a&l所有 &6的商品'
+                    Lore:
+                    - ''
+                    - '&e点击切换至 &b&l出售 &e商品的界面'
+                Selling:
+                    Item: 'LIGHT_BLUE_WOOL'
+                    Toggle: true
+                    Slot: 53
+                    Name: '&6当前正在查看 &b&l出售 &6中的商品'
+                    Lore:
+                    - ''
+                    - '&e点击切换至 &d&l收购 &e商品的界面'
+                Buying:
+                    Item: 'MAGENTA_WOOL'
+                    Toggle: true
+                    Slot: 53
+                    Name: '&6当前正在查看 &d&l收购 &6中的商品'
+                    Lore:
+                    - ''
+                    - '&e点击切换至 &5&l拍卖 &e商品的界面'
+                Bidding:
+                    Item: 'PURPLE_WOOL'
+                    Toggle: true
+                    Slot: 53
+                    Name: '&6当前正在查看 &5&l拍卖 &6中的商品'
+                    Lore:
+                    - ''
+                    - '&e点击切换至 &a&l所有 &e商品的界面'
+            WhatIsThis:
+                MainShop:
+                    Item: 'ENCHANTED_BOOK'
+                    Toggle: true
+                    Slot: 54
+                    Name: '&a&l市场简介'
+                    Lore:
+                    - ''
+                    - '&7这里是全球市场'
+                    - '&7你可以在这里和其他人进行商品交易'
+                    - '&7使用&c/ca help&7获得帮助。'
+                SellingShop:
+                    Item: 'ENCHANTED_BOOK'
+                    Toggle: true
+                    Slot: 54
+                    Name: '&b&l出售 &e&l功能介绍'
+                    Lore:
+                    - ''
+                    - '&7这里是全球市场出售卖区'
+                    - '&7你可以在此处购买他人的商品'
+                    - '&7或者出售自己的商品。'
+                    - ''
+                    - "&7使用'&c/ca sell [价格] [数量]&7'"
+                    - '&7在市场上出售你手中的商品'
+                BuyingShop:
+                    Item: 'ENCHANTED_BOOK'
+                    Toggle: true
+                    Slot: 54
+                    Name: '&d&l收购 &e&l功能介绍'
+                    Lore:
+                    - ''
+                    - '&7这里是全球市场出收购区'
+                    - '&7你可以在此处出售物品给其他买主'
+                    - '&7或者自己发起商品的收购信息。'
+                    - ''
+                    - "&7使用'&c/ca buy [价格] [数量] [物品]&7'"
+                    - '&7在市场上收购你手中/指定的商品'
+                BiddingShop:
+                    Item: 'ENCHANTED_BOOK'
+                    Toggle: true
+                    Slot: 54
+                    Name: '&5&l拍卖 &e&l功能介绍'
+                    Lore:
+                    - ''
+                    - '&7这里是全球市场的拍卖区'
+                    - '&7你可以在这里竞拍别人的商品'
+                    - '&7或者你也可以发起自己的商品拍卖。'
+                    - ''
+                    - "&7使用'&c/ca bid [价格] [数量]&7'"
+                    - '&7在市场上拍卖你手中的商品'
+                CurrentItems:
+                    Item: 'ENCHANTED_BOOK'
+                    Toggle: true
+                    Slot: 54
+                    Name: '&e&l商品界面'
+                    Lore:
+                    - ''
+                    - '&7这里列出的是你当前的所有商品'
+                Items-Mail:
+                    Item: 'ENCHANTED_BOOK'
+                    Toggle: true
+                    Slot: 54
+                    Name: '&6收件箱'
+                    Lore:
+                    - ''
+                    - '&7这里列出的是你撤销/过期/收购的商品'
+                    - '&7点击它们即可返回背包'
+                Viewing:
+                    Item: 'ENCHANTED_BOOK'
+                    Toggle: true
+                    Slot: 50
+                    Name: '&e&l商品界面'
+                    Lore:
+                    - ''
+                    - '&7这里展示的是你所指定的玩家的所有商品'
+                Categories:
+                    Item: 'ENCHANTED_BOOK'
+                    Toggle: true
+                    Slot: 45
+                    Name: '&e&l分类界面'
+                    Lore:
+                    - ''
+                    - '&7这里展示的是正在市场的所有商品的分类'
+            Player-Items-List-Back:
+                Item: 'PAPER'
+                Slot: 46
+                Name: '&6返回'
+            Player-Items-Mail-Back:
+                Item: 'PAPER'
+                Slot: 46
+                Name: '&6返回'
+            Categories-Back:
+                Item: 'PAPER'
+                Slot: 37
+                Name: '&6返回'
+            Return:
+                Item: 'FLOWER_POT'
+                Slot: 50
+                Name: '&6返回全部'
+                Lore:
+                - ''
+                - '&e点击将物品全部返回背包'
+            Confirm:
+                Item: 'LIME_STAINED_GLASS_PANE'
+                Name: '&a确定'
+            Cancel:
+                Item: 'RED_STAINED_GLASS_PANE'
+                Name: '&c取消'
+            Your-Item:
+                Item: 'BARRIER'
+                Name: '&c你不能购买或出售你自己的物品.'
+            Cant-Afford:
+                Item: 'BARRIER'
+                Name: '&c你的硬币数量不足！'
+            Not-owned:
+                Item: 'BARRIER'
+                Name: '&c你未拥有这个物品！'
+    #权限编辑
+    Permissions:
+        Market:
+            #绕过出售物品数量上限
+            Sell-Bypass: 
+                Permission: crazyauctionsplus.market.sell-bypass
+                #默认是否拥有该权限
+                Default: false
+            #绕过收购物品数量上限
+            Buy-Bypass: 
+                Permission: crazyauctionsplus.market.buy-bypass
+                Default: false
+            #绕过拍卖物品数量上限
+            Bid-Bypass: 
+                Permission: crazyauctionsplus.market.bid-bypass
+                Default: false
+            #绕过出售物品时的税收
+            Sell-Tax-Rate-Bypass: 
+                Permission: crazyauctionsplus.market.sell-tax-rate-bypass
+                Default: false
+            #绕过收购物品时的税收
+            Buy-Tax-Rate-Bypass: 
+                Permission: crazyauctionsplus.market.buy-tax-rate-bypass
+                Default: false
+            #绕过拍卖物品时的税收
+            Bid-Tax-Rate-Bypass: 
+                Permission: crazyauctionsplus.market.bid-tax-rate-bypass
+                Default: false
+            #取消商品
+            Cancelled-Item: 
+                Permission: crazyauctionsplus.market.cancelleditem
+                Default: false
+            #权限组
+            Permission-Groups:
+                #可以自定义
+                Vip:
+                    Permission: crazyauctionsplus.group.vip
+                    Default: false
+                    #出售物品的上限，-1为无限
+                    Sell-Limit: -1
+                    #收购物品的上限
+                    Buy-Limit: -1
+                    #拍卖物品的上限
+                    Bid-Limit: -1
+                    #出售物品的税率（0为无）
+                    Sell-Tax-Rate: 0
+                    #收购物品的税率（0为无）
+                    Buy-Tax-Rate: 0
+                    #拍卖物品的税率（0为无）
+                    Bid-Tax-Rate: 0
+                Default:
+                    Permission: crazyauctionsplus.group.default
+                    #是否为默认的权限组
+                    Default: true
+                    Sell-Limit: 10
+                    Buy-Limit: 10
+                    Bid-Limit: 3
+                    Sell-Tax-Rate: 0.05
+                    Buy-Tax-Rate: 0.05
+                    Bid-Tax-Rate: 0.05
+        #命令权限
+        Commands:
+            #使用插件主命令的权限
+            Access: 
+                Permission: crazyauctionsplus.command.access
+                #是否默认玩家拥有该权限
+                Default: true
+            #使用/ca help的权限
+            Help: 
+                Permission: crazyauctionsplus.command.help
+                Default: true
+            #使用/ca reload的权限
+            Reload: 
+                Permission: crazyauctionsplus.command.reload
+                Default: false
+                #子命令
+                SubCommands:
+                    Config:
+                        Permission: crazyauctionsplus.command.reload.config
+                        Default: false
+                    Database:
+                        Permission: crazyauctionsplus.command.reload.database
+                        Default: false
+                    Messages:
+                        Permission: crazyauctionsplus.command.reload.messages
+                        Default: false
+                    Market:
+                        Permission: crazyauctionsplus.command.reload.market
+                        Default: false
+                    PlayerData:
+                        Permission: crazyauctionsplus.command.reload.playerdata
+                        Default: false
+                    Category:
+                        Permission: crazyauctionsplus.command.reload.category
+                        Default: false
+                    ItemCollection:
+                        Permission: crazyauctionsplus.command.reload.itemcollection
+                        Default: false
+            #使用/ca gui的权限
+            Gui: 
+                Permission: crazyauctionsplus.command.gui
+                Default: true
+            #使用/ca gui [其他玩家] 的权限
+            Gui-Others-Player: 
+                Permission: crazyauctionsplus.command.gui.othersplayer
+                Default: false
+            #使用/ca view的权限
+            View: 
+                Permission: crazyauctionsplus.command.view
+                Default: true
+            #使用/ca view [其他玩家] 的权限
+            View-Others-Player: 
+                Permission: crazyauctionsplus.command.view.othersplayer
+                Default: true
+            #使用/ca mail的权限
+            Mail: 
+                Permission: crazyauctionsplus.command.mail
+                Default: true
+            #使用/ca listed的权限
+            Listed: 
+                Permission: crazyauctionsplus.command.listed
+                Default: true
+            #使用/ca sell的权限
+            Sell: 
+                Permission: crazyauctionsplus.command.Sell
+                Default: true
+            #使用/ca buy的权限
+            Buy: 
+                Permission: crazyauctionsplus.command.buy
+                Default: true
+            #使用/ca bid的权限
+            Bid: 
+                Permission: crazyauctionsplus.command.bid
+                Default: true
+            #使用/ca admin的权限
+            Admin:
+                Permission: crazyauctionsplus.command.admin
+                Default: false
+                SubCommands:
+                    RollBack:
+                        Permission: crazyauctionsplus.command.admin.rollback
+                        Default: false
+                    Backup:
+                        Permission: crazyauctionsplus.command.admin.backup
+                        Default: false
+                    Synchronize:
+                        Permission: crazyauctionsplus.command.admin.synchronize
+                        Default: false
+                    Info:
+                        Permission: crazyauctionsplus.command.admin.info
+                        Default: false
+                    PrintStackTrace:
+                        Permission: crazyauctionsplus.command.admin.printstacktrace
+                        Default: false
+                    Market:
+                        Permission: crazyauctionsplus.command.admin.market
+                        Default: false
+                        SubCommands:
+                            Confirm:
+                                Permission: crazyauctionsplus.command.admin.market.confirm
+                                Default: false
+                            Clear:
+                                Permission: crazyauctionsplus.command.admin.market.clear
+                                Default: false
+                            List:
+                                Permission: crazyauctionsplus.command.admin.market.list
+                                Default: false
+                            Repricing:
+                                Permission: crazyauctionsplus.command.admin.market.repricing
+                                Default: false
+                            Delete:
+                                Permission: crazyauctionsplus.command.admin.market.delete
+                                Default: false
+                            Download:
+                                Permission: crazyauctionsplus.command.admin.market.download
+                                Default: false
+                            Upload:
+                                Permission: crazyauctionsplus.command.admin.market.upload
+                                Default: false
+                    Player:
+                        Permission: crazyauctionsplus.command.admin.player
+                        Default: false
+                        SubCommands:
+                            Confirm:
+                                Permission: crazyauctionsplus.command.admin.player.confirm
+                                Default: false
+                            Clear:
+                                Permission: crazyauctionsplus.command.admin.player.clear
+                                Default: false
+                            List:
+                                Permission: crazyauctionsplus.command.admin.player.list
+                                Default: false
+                            View:
+                                Permission: crazyauctionsplus.command.admin.player.view
+                                Default: false
+                            Delete:
+                                Permission: crazyauctionsplus.command.admin.player.delete
+                                Default: false
+                            Download:
+                                Permission: crazyauctionsplus.command.admin.player.download
+                                Default: false
+                            Upload:
+                                Permission: crazyauctionsplus.command.admin.player.upload
+                                Default: false
+                    ItemCollection:
+                        Permission: crazyauctionsplus.command.admin.itemcollection
+                        Default: false
+                        SubCommands:
+                            Add: 
+                                Permission: crazyauctionsplus.command.admin.itemcollection.add
+                                Default: false
+                            Delete: 
+                                Permission: crazyauctionsplus.command.admin.itemcollection.delete
+                                Default: false
+                            List:
+                                Permission: crazyauctionsplus.command.admin.itemcollection.list
+                                Default: false
+                            Give:
+                                Permission: crazyauctionsplus.command.admin.itemcollection.give
+                                Default: false
