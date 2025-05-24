@@ -1,5 +1,5 @@
 Settings: 
-    Prefix: '&6&lCrazyAuctionsPlus &f&l>>> ' #Prefix of when you get Crazy Auctions Messages.
+    Prefix: '&6&lCrazyAuctionsReloaded &f&l>>> ' #Prefix of when you get Crazy Auctions Messages.
     Main-GUIName: '&8&lGlobal Market&c&l' #Name of the Main GUI.
     Sell-GUIName: '&8&lGlobal Market | &b&lSelling&c&l' #Name of the Selling Items GUI.
     Buy-GUIName: '&8&lGlobal Market | &d&lBuying&c&l' #Name of the Buying Items GUI.
@@ -30,11 +30,11 @@ Settings:
     Item-NBT-comparison: true #Does the item match the buyer's and seller's NBT when purchasing the item.
     Automatic-Backup: false #Whether to enable automatic backup, automatically back up the stored data every time the server is shut down.
     Download: #Database download file related settings
-        Market: 'plugins/CrazyAuctionsPlus/Download/GlobalMarket-%date%.yml'
-        PlayerData: 'plugins/CrazyAuctionsPlus/Download/Player/%player%-%uuid%.yml'
+        Market: 'plugins/CrazyAuctionsReloaded/Download/GlobalMarket-%date%.yml'
+        PlayerData: 'plugins/CrazyAuctionsReloaded/Download/Player/%player%-%uuid%.yml'
     Upload: #Database upload file related settings
-        Market: 'plugins/CrazyAuctionsPlus/Database.yml'
-        PlayerData: 'plugins/CrazyAuctionsPlus/Player/%uuid%.yml'
+        Market: 'plugins/CrazyAuctionsReloaded/Database.yml'
+        PlayerData: 'plugins/CrazyAuctionsReloaded/Player/%uuid%.yml'
     Global-Market-Automatic-Update: #Automatic update of market data
         Enabled: true
         Update-Delay: 5
@@ -50,7 +50,7 @@ Settings:
         Port: 3306
         Username: 'root'
         Password: 'password'
-        Database: 'crazyauctionsplus' #Database's name
+        Database: 'crazyauctionsreloaded' #Database's name
         Parameter: '?useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8' #More connection parameters. If you are not a developer and are not familiar with JDBC, please do not modify it.
         Automatic-Repair: -1 #The number of times the system automatically repairs the connection when the database connection is disconnected (-1 is infinite)
         Data-Reacquisition: #If you have multiple servers using the same MySQL, it is recommended to enable it to ensure real-time data synchronization
@@ -63,7 +63,7 @@ Settings:
     SQLite-Storage: #SQLite Database settings
         Enabled: false
         Database-File: 'Database.db'
-        Database-Path: 'plugins/CrazyAuctionsPlus/'
+        Database-Path: 'plugins/CrazyAuctionsReloaded/'
         Automatic-Repair: 3 #When the database fails, the number of automatic repairs, filling -1 is countless times
         Data-Reacquisition:
             Market: false
@@ -535,37 +535,37 @@ Settings:
         Market:
             #Bypass the maximum number of items for sale
             Sell-Bypass: 
-                Permission: crazyauctionsplus.market.sell-bypass
+                Permission: crazyauctionsreloaded.market.sell-bypass
                 #Whether the default player has this permission
                 Default: false
             #Bypass the maximum number of items for buy
             Buy-Bypass: 
-                Permission: crazyauctionsplus.market.buy-bypass
+                Permission: crazyauctionsreloaded.market.buy-bypass
                 Default: false
             #Bypass the maximum number of items for bid
             Bid-Bypass: 
-                Permission: crazyauctionsplus.market.bid-bypass
+                Permission: crazyauctionsreloaded.market.bid-bypass
                 Default: false
             #Bypass taxes on items sold
             Sell-Tax-Rate-Bypass: 
-                Permission: crazyauctionsplus.market.sell-tax-rate-bypass
+                Permission: crazyauctionsreloaded.market.sell-tax-rate-bypass
                 Default: false
             #Bypass taxes on purchases
             Buy-Tax-Rate-Bypass: 
-                Permission: crazyauctionsplus.market.buy-tax-rate-bypass
+                Permission: crazyauctionsreloaded.market.buy-tax-rate-bypass
                 Default: false
             #Bypass taxes on items bid
             Bid-Tax-Rate-Bypass: 
-                Permission: crazyauctionsplus.market.bid-tax-rate-bypass
+                Permission: crazyauctionsreloaded.market.bid-tax-rate-bypass
                 Default: false
             #Cancelled item's permission
             Cancelled-Item: 
-                Permission: crazyauctionsplus.market.cancelleditem
+                Permission: crazyauctionsreloaded.market.cancelleditem
                 Default: false
             Permission-Groups:
                 #Customizable, follow the format below:
                 Vip:
-                    Permission: crazyauctionsplus.group.vip
+                    Permission: crazyauctionsreloaded.group.vip
                     Default: false
                     #Maximum number of items sell, -1 is unlimited
                     Sell-Limit: -1
@@ -578,7 +578,7 @@ Settings:
                     Buy-Tax-Rate: 0.05
                     Bid-Tax-Rate: 0.05
                 Default:
-                    Permission: crazyauctionsplus.group.default
+                    Permission: crazyauctionsreloaded.group.default
                     #Whether it is the default permission group?
                     Default: true
                     Sell-Limit: 10
@@ -591,159 +591,159 @@ Settings:
         Commands:
             #Permissions to use plugin main commands
             Access: 
-                Permission: crazyauctionsplus.command.access
+                Permission: crazyauctionsreloaded.command.access
                 #Whether the default player has this permission
                 Default: true
             #Permissions to use /ca help
             Help: 
-                Permission: crazyauctionsplus.command.help
+                Permission: crazyauctionsreloaded.command.help
                 Default: true
             #Permissions to use /ca reload
             Reload: 
-                Permission: crazyauctionsplus.command.reload
+                Permission: crazyauctionsreloaded.command.reload
                 Default: false
                 #Sub commands
                 SubCommands:
                     Config:
-                        Permission: crazyauctionsplus.command.reload.config
+                        Permission: crazyauctionsreloaded.command.reload.config
                         Default: false
                     Database:
-                        Permission: crazyauctionsplus.command.reload.database
+                        Permission: crazyauctionsreloaded.command.reload.database
                         Default: false
                     Messages:
-                        Permission: crazyauctionsplus.command.reload.messages
+                        Permission: crazyauctionsreloaded.command.reload.messages
                         Default: false
                     Market:
-                        Permission: crazyauctionsplus.command.reload.market
+                        Permission: crazyauctionsreloaded.command.reload.market
                         Default: false
                     PlayerData:
-                        Permission: crazyauctionsplus.command.reload.playerdata
+                        Permission: crazyauctionsreloaded.command.reload.playerdata
                         Default: false
                     Category:
-                        Permission: crazyauctionsplus.command.reload.category
+                        Permission: crazyauctionsreloaded.command.reload.category
                         Default: false
                     ItemCollection:
-                        Permission: crazyauctionsplus.command.reload.itemcollection
+                        Permission: crazyauctionsreloaded.command.reload.itemcollection
                         Default: false
             #Permissions to use /ca gui
             Gui: 
-                Permission: crazyauctionsplus.command.gui
+                Permission: crazyauctionsreloaded.command.gui
                 Default: true
             #Permissions to use /ca gui [others player] 
             Gui-Others-Player: 
-                Permission: crazyauctionsplus.command.gui.othersplayer
+                Permission: crazyauctionsreloaded.command.gui.othersplayer
                 Default: false
             #Permissions to use /ca view
             View: 
-                Permission: crazyauctionsplus.command.view
+                Permission: crazyauctionsreloaded.command.view
                 Default: true
             #Permissions to use /ca view [others player]
             View-Others-Player: 
-                Permission: crazyauctionsplus.command.view.othersplayer
+                Permission: crazyauctionsreloaded.command.view.othersplayer
                 Default: true
             #Permissions to use /ca mail
             Mail: 
-                Permission: crazyauctionsplus.command.mail
+                Permission: crazyauctionsreloaded.command.mail
                 Default: true
             #Permissions to use /ca listed
             Listed: 
-                Permission: crazyauctionsplus.command.listed
+                Permission: crazyauctionsreloaded.command.listed
                 Default: true
             #Permissions to use /ca sell
             Sell: 
-                Permission: crazyauctionsplus.command.Sell
+                Permission: crazyauctionsreloaded.command.Sell
                 Default: true
             #Permissions to use /ca buy
             Buy: 
-                Permission: crazyauctionsplus.command.buy
+                Permission: crazyauctionsreloaded.command.buy
                 Default: true
             #Permissions to use /ca bid
             Bid: 
-                Permission: crazyauctionsplus.command.bid
+                Permission: crazyauctionsreloaded.command.bid
                 Default: true
             #Permissions to use /ca admin
             Admin:
-                Permission: crazyauctionsplus.command.admin
+                Permission: crazyauctionsreloaded.command.admin
                 Default: false
                 SubCommands:
                     RollBack:
-                        Permission: crazyauctionsplus.command.admin.rollback
+                        Permission: crazyauctionsreloaded.command.admin.rollback
                         Default: false
                     Backup:
-                        Permission: crazyauctionsplus.command.admin.backup
+                        Permission: crazyauctionsreloaded.command.admin.backup
                         Default: false
                     Synchronize:
-                        Permission: crazyauctionsplus.command.admin.synchronize
+                        Permission: crazyauctionsreloaded.command.admin.synchronize
                         Default: false
                     Info:
-                        Permission: crazyauctionsplus.command.admin.info
+                        Permission: crazyauctionsreloaded.command.admin.info
                         Default: false
                     PrintStackTrace:
-                        Permission: crazyauctionsplus.command.admin.printstacktrace
+                        Permission: crazyauctionsreloaded.command.admin.printstacktrace
                         Default: false
                     Market:
-                        Permission: crazyauctionsplus.command.admin.market
+                        Permission: crazyauctionsreloaded.command.admin.market
                         Default: false
                         SubCommands:
                             Confirm:
-                                Permission: crazyauctionsplus.command.admin.market.confirm
+                                Permission: crazyauctionsreloaded.command.admin.market.confirm
                                 Default: false
                             Clear:
-                                Permission: crazyauctionsplus.command.admin.market.clear
+                                Permission: crazyauctionsreloaded.command.admin.market.clear
                                 Default: false
                             List:
-                                Permission: crazyauctionsplus.command.admin.market.list
+                                Permission: crazyauctionsreloaded.command.admin.market.list
                                 Default: false
                             Repricing:
-                                Permission: crazyauctionsplus.command.admin.market.repricing
+                                Permission: crazyauctionsreloaded.command.admin.market.repricing
                                 Default: false
                             Delete:
-                                Permission: crazyauctionsplus.command.admin.market.delete
+                                Permission: crazyauctionsreloaded.command.admin.market.delete
                                 Default: false
                             Download:
-                                Permission: crazyauctionsplus.command.admin.market.download
+                                Permission: crazyauctionsreloaded.command.admin.market.download
                                 Default: false
                             Upload:
-                                Permission: crazyauctionsplus.command.admin.market.upload
+                                Permission: crazyauctionsreloaded.command.admin.market.upload
                                 Default: false
                     Player:
-                        Permission: crazyauctionsplus.command.admin.player
+                        Permission: crazyauctionsreloaded.command.admin.player
                         Default: false
                         SubCommands:
                             Confirm:
-                                Permission: crazyauctionsplus.command.admin.player.confirm
+                                Permission: crazyauctionsreloaded.command.admin.player.confirm
                                 Default: false
                             Clear:
-                                Permission: crazyauctionsplus.command.admin.player.clear
+                                Permission: crazyauctionsreloaded.command.admin.player.clear
                                 Default: false
                             List:
-                                Permission: crazyauctionsplus.command.admin.player.list
+                                Permission: crazyauctionsreloaded.command.admin.player.list
                                 Default: false
                             View:
-                                Permission: crazyauctionsplus.command.admin.player.view
+                                Permission: crazyauctionsreloaded.command.admin.player.view
                                 Default: false
                             Delete:
-                                Permission: crazyauctionsplus.command.admin.player.delete
+                                Permission: crazyauctionsreloaded.command.admin.player.delete
                                 Default: false
                             Download:
-                                Permission: crazyauctionsplus.command.admin.player.download
+                                Permission: crazyauctionsreloaded.command.admin.player.download
                                 Default: false
                             Upload:
-                                Permission: crazyauctionsplus.command.admin.player.upload
+                                Permission: crazyauctionsreloaded.command.admin.player.upload
                                 Default: false
                     ItemCollection:
-                        Permission: crazyauctionsplus.command.admin.itemcollection
+                        Permission: crazyauctionsreloaded.command.admin.itemcollection
                         Default: false
                         SubCommands:
                             Add: 
-                                Permission: crazyauctionsplus.command.admin.itemcollection.add
+                                Permission: crazyauctionsreloaded.command.admin.itemcollection.add
                                 Default: false
                             Delete: 
-                                Permission: crazyauctionsplus.command.admin.itemcollection.delete
+                                Permission: crazyauctionsreloaded.command.admin.itemcollection.delete
                                 Default: false
                             List:
-                                Permission: crazyauctionsplus.command.admin.itemcollection.list
+                                Permission: crazyauctionsreloaded.command.admin.itemcollection.list
                                 Default: false
                             Give:
-                                Permission: crazyauctionsplus.command.admin.itemcollection.give
+                                Permission: crazyauctionsreloaded.command.admin.itemcollection.give
                                 Default: false

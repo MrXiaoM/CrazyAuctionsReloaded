@@ -1,12 +1,12 @@
 plugins {
     java
-    id ("com.github.johnrengelman.shadow") version "7.0.0"
+    id ("com.gradleup.shadow") version "8.3.0"
 }
 
 val targetJavaVersion = 8
-val shadowGroup = "studio.trc.bukkit.crazyauctionsplus.libs"
-group = "studio.trc"
-version = "1.3.2.1"
+val shadowGroup = "top.mrxiaom.crazyauctions.reloaded.libs"
+group = "top.mrxiaom"
+version = "1.0.0"
 
 repositories {
     mavenCentral()

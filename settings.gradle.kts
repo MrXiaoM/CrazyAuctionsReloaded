@@ -1,1 +1,1 @@
-rootProject.name = "CrazyAuctionsPlus"
+rootProject.name = "CrazyAuctionsReloaded"

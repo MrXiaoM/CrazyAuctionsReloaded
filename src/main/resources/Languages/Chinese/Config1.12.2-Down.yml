@@ -1,5 +1,5 @@
 Settings:
-    Prefix: '&6&lCrazyAuctionsPlus &f&l>>> '
+    Prefix: '&6&lCrazyAuctionsReloaded &f&l>>> '
     Main-GUIName: '&8&l全球市场&c&l'
     Sell-GUIName: '&8&l全球市场 | &b&l出售&c&l'
     Buy-GUIName: '&8&l全球市场 | &d&l收购&c&l'
@@ -24,12 +24,12 @@ Settings:
     Max-Beginning-Bid-Price: 1000000
     #数据库下载文件相关设置
     Download:
-        Market: 'plugins/CrazyAuctionsPlus/Download/全球市场-%date%.yml'
-        PlayerData: 'plugins/CrazyAuctionsPlus/Download/Player/%player%-%uuid%.yml'
+        Market: 'plugins/CrazyAuctionsReloaded/Download/全球市场-%date%.yml'
+        PlayerData: 'plugins/CrazyAuctionsReloaded/Download/Player/%player%-%uuid%.yml'
     #数据库上传文件相关设置
     Upload:
-        Market: 'plugins/CrazyAuctionsPlus/Database.yml'
-        PlayerData: 'plugins/CrazyAuctionsPlus/Player/%uuid%.yml'
+        Market: 'plugins/CrazyAuctionsReloaded/Database.yml'
+        PlayerData: 'plugins/CrazyAuctionsReloaded/Player/%uuid%.yml'
     #是否启用自动备份， 每一次关闭服务器时都会自动备份一次储存数据
     Automatic-Backup: false
     #全球市场自动刷新
@@ -71,7 +71,7 @@ Settings:
         #密码
         Password: 'password'
         #数据库名称
-        Database: 'crazyauctionsplus'
+        Database: 'crazyauctionsreloaded'
         #更多连接参数，如果你不是一名开发者，并且不熟知JDBC，请不要修改它
         Parameter: '?useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8'
         #当数据库连接丢失时，自动修复的次数， 填-1即为无数次
@@ -97,7 +97,7 @@ Settings:
         #数据库文件
         Database-File: 'Database.db'
         #数据库文件夹路径
-        Database-Path: 'plugins/CrazyAuctionsPlus/'
+        Database-Path: 'plugins/CrazyAuctionsReloaded/'
         #当数据库发生故障时，自动修复的次数， 填-1即为无数次
         Automatic-Repair: 3
         #数据重新获取
@@ -598,38 +598,38 @@ Settings:
         Market:
             #绕过出售物品数量上限
             Sell-Bypass: 
-                Permission: crazyauctionsplus.market.sell-bypass
+                Permission: crazyauctionsreloaded.market.sell-bypass
                 #默认是否拥有该权限
                 Default: false
             #绕过收购物品数量上限
             Buy-Bypass: 
-                Permission: crazyauctionsplus.market.buy-bypass
+                Permission: crazyauctionsreloaded.market.buy-bypass
                 Default: false
             #绕过拍卖物品数量上限
             Bid-Bypass: 
-                Permission: crazyauctionsplus.market.bid-bypass
+                Permission: crazyauctionsreloaded.market.bid-bypass
                 Default: false
             #绕过出售物品时的税收
             Sell-Tax-Rate-Bypass: 
-                Permission: crazyauctionsplus.market.sell-tax-rate-bypass
+                Permission: crazyauctionsreloaded.market.sell-tax-rate-bypass
                 Default: false
             #绕过收购物品时的税收
             Buy-Tax-Rate-Bypass: 
-                Permission: crazyauctionsplus.market.buy-tax-rate-bypass
+                Permission: crazyauctionsreloaded.market.buy-tax-rate-bypass
                 Default: false
             #绕过拍卖物品时的税收
             Bid-Tax-Rate-Bypass: 
-                Permission: crazyauctionsplus.market.bid-tax-rate-bypass
+                Permission: crazyauctionsreloaded.market.bid-tax-rate-bypass
                 Default: false
             #取消商品
             Cancelled-Item: 
-                Permission: crazyauctionsplus.market.cancelleditem
+                Permission: crazyauctionsreloaded.market.cancelleditem
                 Default: false
             #权限组
             Permission-Groups:
                 #可以自定义
                 Vip:
-                    Permission: crazyauctionsplus.group.vip
+                    Permission: crazyauctionsreloaded.group.vip
                     Default: false
                     #出售物品的上限，-1为无限
                     Sell-Limit: -1
@@ -644,7 +644,7 @@ Settings:
                     #拍卖物品的税率（0为无）
                     Bid-Tax-Rate: 0
                 Default:
-                    Permission: crazyauctionsplus.group.default
+                    Permission: crazyauctionsreloaded.group.default
                     #是否为默认的权限组
                     Default: true
                     Sell-Limit: 10
@@ -657,159 +657,159 @@ Settings:
         Commands:
             #使用插件主命令的权限
             Access: 
-                Permission: crazyauctionsplus.command.access
+                Permission: crazyauctionsreloaded.command.access
                 #是否默认玩家拥有该权限
                 Default: true
             #使用/ca help的权限
             Help: 
-                Permission: crazyauctionsplus.command.help
+                Permission: crazyauctionsreloaded.command.help
                 Default: true
             #使用/ca reload的权限
             Reload: 
-                Permission: crazyauctionsplus.command.reload
+                Permission: crazyauctionsreloaded.command.reload
                 Default: false
                 #子命令
                 SubCommands:
                     Config:
-                        Permission: crazyauctionsplus.command.reload.config
+                        Permission: crazyauctionsreloaded.command.reload.config
                         Default: false
                     Database:
-                        Permission: crazyauctionsplus.command.reload.database
+                        Permission: crazyauctionsreloaded.command.reload.database
                         Default: false
                     Messages:
-                        Permission: crazyauctionsplus.command.reload.messages
+                        Permission: crazyauctionsreloaded.command.reload.messages
                         Default: false
                     Market:
-                        Permission: crazyauctionsplus.command.reload.market
+                        Permission: crazyauctionsreloaded.command.reload.market
                         Default: false
                     PlayerData:
-                        Permission: crazyauctionsplus.command.reload.playerdata
+                        Permission: crazyauctionsreloaded.command.reload.playerdata
                         Default: false
                     Category:
-                        Permission: crazyauctionsplus.command.reload.category
+                        Permission: crazyauctionsreloaded.command.reload.category
                         Default: false
                     ItemCollection:
-                        Permission: crazyauctionsplus.command.reload.itemcollection
+                        Permission: crazyauctionsreloaded.command.reload.itemcollection
                         Default: false
             #使用/ca gui的权限
             Gui: 
-                Permission: crazyauctionsplus.command.gui
+                Permission: crazyauctionsreloaded.command.gui
                 Default: true
             #使用/ca gui [其他玩家] 的权限
             Gui-Others-Player: 
-                Permission: crazyauctionsplus.command.gui.othersplayer
+                Permission: crazyauctionsreloaded.command.gui.othersplayer
                 Default: false
             #使用/ca view的权限
             View: 
-                Permission: crazyauctionsplus.command.view
+                Permission: crazyauctionsreloaded.command.view
                 Default: true
             #使用/ca view [其他玩家] 的权限
             View-Others-Player: 
-                Permission: crazyauctionsplus.command.view.othersplayer
+                Permission: crazyauctionsreloaded.command.view.othersplayer
                 Default: true
             #使用/ca mail的权限
             Mail: 
-                Permission: crazyauctionsplus.command.mail
+                Permission: crazyauctionsreloaded.command.mail
                 Default: true
             #使用/ca listed的权限
             Listed: 
-                Permission: crazyauctionsplus.command.listed
+                Permission: crazyauctionsreloaded.command.listed
                 Default: true
             #使用/ca sell的权限
             Sell: 
-                Permission: crazyauctionsplus.command.Sell
+                Permission: crazyauctionsreloaded.command.Sell
                 Default: true
             #使用/ca buy的权限
             Buy: 
-                Permission: crazyauctionsplus.command.buy
+                Permission: crazyauctionsreloaded.command.buy
                 Default: true
             #使用/ca bid的权限
             Bid: 
-                Permission: crazyauctionsplus.command.bid
+                Permission: crazyauctionsreloaded.command.bid
                 Default: true
             #使用/ca admin的权限
             Admin:
-                Permission: crazyauctionsplus.command.admin
+                Permission: crazyauctionsreloaded.command.admin
                 Default: false
                 SubCommands:
                     RollBack:
-                        Permission: crazyauctionsplus.command.admin.rollback
+                        Permission: crazyauctionsreloaded.command.admin.rollback
                         Default: false
                     Backup:
-                        Permission: crazyauctionsplus.command.admin.backup
+                        Permission: crazyauctionsreloaded.command.admin.backup
                         Default: false
                     Synchronize:
-                        Permission: crazyauctionsplus.command.admin.synchronize
+                        Permission: crazyauctionsreloaded.command.admin.synchronize
                         Default: false
                     Info:
-                        Permission: crazyauctionsplus.command.admin.info
+                        Permission: crazyauctionsreloaded.command.admin.info
                         Default: false
                     PrintStackTrace:
-                        Permission: crazyauctionsplus.command.admin.printstacktrace
+                        Permission: crazyauctionsreloaded.command.admin.printstacktrace
                         Default: false
                     Market:
-                        Permission: crazyauctionsplus.command.admin.market
+                        Permission: crazyauctionsreloaded.command.admin.market
                         Default: false
                         SubCommands:
                             Confirm:
-                                Permission: crazyauctionsplus.command.admin.market.confirm
+                                Permission: crazyauctionsreloaded.command.admin.market.confirm
                                 Default: false
                             Clear:
-                                Permission: crazyauctionsplus.command.admin.market.clear
+                                Permission: crazyauctionsreloaded.command.admin.market.clear
                                 Default: false
                             List:
-                                Permission: crazyauctionsplus.command.admin.market.list
+                                Permission: crazyauctionsreloaded.command.admin.market.list
                                 Default: false
                             Repricing:
-                                Permission: crazyauctionsplus.command.admin.market.repricing
+                                Permission: crazyauctionsreloaded.command.admin.market.repricing
                                 Default: false
                             Delete:
-                                Permission: crazyauctionsplus.command.admin.market.delete
+                                Permission: crazyauctionsreloaded.command.admin.market.delete
                                 Default: false
                             Download:
-                                Permission: crazyauctionsplus.command.admin.market.download
+                                Permission: crazyauctionsreloaded.command.admin.market.download
                                 Default: false
                             Upload:
-                                Permission: crazyauctionsplus.command.admin.market.upload
+                                Permission: crazyauctionsreloaded.command.admin.market.upload
                                 Default: false
                     Player:
-                        Permission: crazyauctionsplus.command.admin.player
+                        Permission: crazyauctionsreloaded.command.admin.player
                         Default: false
                         SubCommands:
                             Confirm:
-                                Permission: crazyauctionsplus.command.admin.player.confirm
+                                Permission: crazyauctionsreloaded.command.admin.player.confirm
                                 Default: false
                             Clear:
-                                Permission: crazyauctionsplus.command.admin.player.clear
+                                Permission: crazyauctionsreloaded.command.admin.player.clear
                                 Default: false
                             List:
-                                Permission: crazyauctionsplus.command.admin.player.list
+                                Permission: crazyauctionsreloaded.command.admin.player.list
                                 Default: false
                             View:
-                                Permission: crazyauctionsplus.command.admin.player.view
+                                Permission: crazyauctionsreloaded.command.admin.player.view
                                 Default: false
                             Delete:
-                                Permission: crazyauctionsplus.command.admin.player.delete
+                                Permission: crazyauctionsreloaded.command.admin.player.delete
                                 Default: false
                             Download:
-                                Permission: crazyauctionsplus.command.admin.player.download
+                                Permission: crazyauctionsreloaded.command.admin.player.download
                                 Default: false
                             Upload:
-                                Permission: crazyauctionsplus.command.admin.player.upload
+                                Permission: crazyauctionsreloaded.command.admin.player.upload
                                 Default: false
                     ItemCollection:
-                        Permission: crazyauctionsplus.command.admin.itemcollection
+                        Permission: crazyauctionsreloaded.command.admin.itemcollection
                         Default: false
                         SubCommands:
                             Add: 
-                                Permission: crazyauctionsplus.command.admin.itemcollection.add
+                                Permission: crazyauctionsreloaded.command.admin.itemcollection.add
                                 Default: false
                             Delete: 
-                                Permission: crazyauctionsplus.command.admin.itemcollection.delete
+                                Permission: crazyauctionsreloaded.command.admin.itemcollection.delete
                                 Default: false
                             List:
-                                Permission: crazyauctionsplus.command.admin.itemcollection.list
+                                Permission: crazyauctionsreloaded.command.admin.itemcollection.list
                                 Default: false
                             Give:
-                                Permission: crazyauctionsplus.command.admin.itemcollection.give
+                                Permission: crazyauctionsreloaded.command.admin.itemcollection.give
                                 Default: false

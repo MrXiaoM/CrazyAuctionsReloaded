@@ -1,5 +1,9 @@
-# CrazyAuctionsPlus
-Bukkit/Spigot CrazyAuctionsPlus Plugin
+# CrazyAuctionsReloaded
 
-由于原插件尚有部分问题，仅作一些修复
-鉴于运用开源代码，故开源此修改部分，仅供参考
+Minecraft 全球市场插件 正在修复中  
+Fork from [CrazyAuctionsPlus](https://github.com/MrXiaoM/CrazyAuctionsPlus)
+
+> [!WARNING]
+>
+> 这个项目正在进行重构，可能会频繁进行破坏性变更，在重构完成之前，请勿投入使用。
+>
