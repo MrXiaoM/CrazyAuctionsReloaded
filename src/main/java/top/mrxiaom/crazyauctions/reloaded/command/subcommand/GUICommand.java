@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommand;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommandType;
-import top.mrxiaom.crazyauctions.reloaded.event.GUIAction;
+import top.mrxiaom.crazyauctions.reloaded.gui.GUI;
 import top.mrxiaom.crazyauctions.reloaded.util.Category;
 import top.mrxiaom.crazyauctions.reloaded.util.FileManager.Files;
 import top.mrxiaom.crazyauctions.reloaded.util.MessageUtil;
@@ -34,21 +34,19 @@ public class GUICommand
         }
         if (args.length == 1) {
             if (Files.CONFIG.getFile().getBoolean("Settings.Category-Page-Opens-First")) {
-                GUIAction.setShopType(player, ShopType.ANY);
-                GUIAction.setCategory(player, Category.getDefaultCategory());
-                GUIAction.openCategories(player, ShopType.ANY);
+                GUI.openCategories(player, ShopType.ANY, Category.getDefaultCategory());
             } else {
-                GUIAction.openShop(player, ShopType.ANY, Category.getDefaultCategory(), 1);
+                GUI.openShop(player, ShopType.ANY, Category.getDefaultCategory(), 1);
             }
         } else if (args.length == 2) {
             if (args[1].equalsIgnoreCase("sell")) {
-                GUIAction.openShop(player, ShopType.SELL, Category.getDefaultCategory(), 1);
+                GUI.openShop(player, ShopType.SELL, Category.getDefaultCategory(), 1);
             } else if (args[1].equalsIgnoreCase("buy")) {
-                GUIAction.openShop(player, ShopType.BUY, Category.getDefaultCategory(), 1);
+                GUI.openShop(player, ShopType.BUY, Category.getDefaultCategory(), 1);
             } else if (args[1].equalsIgnoreCase("bid")) {
-                GUIAction.openShop(player, ShopType.BID, Category.getDefaultCategory(), 1);
+                GUI.openShop(player, ShopType.BID, Category.getDefaultCategory(), 1);
             } else {
-                GUIAction.openShop(player, ShopType.ANY, Category.getDefaultCategory(), 1);
+                GUI.openShop(player, ShopType.ANY, Category.getDefaultCategory(), 1);
             }
         } else if (args.length >= 3) {
             if (!PluginControl.hasCommandPermission(sender, "Gui-Others-Player", true)) return;
@@ -58,13 +56,13 @@ public class GUICommand
                 return;
             }
             if (args[1].equalsIgnoreCase("sell")) {
-                GUIAction.openShop(target, ShopType.SELL, Category.getDefaultCategory(), 1);
+                GUI.openShop(target, ShopType.SELL, Category.getDefaultCategory(), 1);
             } else if (args[1].equalsIgnoreCase("buy")) {
-                GUIAction.openShop(target, ShopType.BUY, Category.getDefaultCategory(), 1);
+                GUI.openShop(target, ShopType.BUY, Category.getDefaultCategory(), 1);
             } else if (args[1].equalsIgnoreCase("bid")) {
-                GUIAction.openShop(target, ShopType.BID, Category.getDefaultCategory(), 1);
+                GUI.openShop(target, ShopType.BID, Category.getDefaultCategory(), 1);
             } else {
-                GUIAction.openShop(target, ShopType.ANY, Category.getDefaultCategory(), 1);
+                GUI.openShop(target, ShopType.ANY, Category.getDefaultCategory(), 1);
             }
         }
     }

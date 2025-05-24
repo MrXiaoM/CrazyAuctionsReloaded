@@ -1,13 +1,11 @@
 package top.mrxiaom.crazyauctions.reloaded;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.HumanEntity;
@@ -24,12 +22,7 @@ import top.mrxiaom.crazyauctions.reloaded.database.engine.MySQLEngine;
 import top.mrxiaom.crazyauctions.reloaded.database.engine.SQLiteEngine;
 import top.mrxiaom.crazyauctions.reloaded.database.storage.MySQLStorage;
 import top.mrxiaom.crazyauctions.reloaded.database.storage.SQLiteStorage;
-import top.mrxiaom.crazyauctions.reloaded.event.AuctionEvents;
-import top.mrxiaom.crazyauctions.reloaded.event.EasyCommand;
-import top.mrxiaom.crazyauctions.reloaded.event.Join;
-import top.mrxiaom.crazyauctions.reloaded.event.GUIAction;
-import top.mrxiaom.crazyauctions.reloaded.event.Quit;
-import top.mrxiaom.crazyauctions.reloaded.event.ShopSign;
+import top.mrxiaom.crazyauctions.reloaded.event.*;
 import top.mrxiaom.crazyauctions.reloaded.util.*;
 
 public class Main
@@ -42,6 +35,7 @@ public class Main
     public static Properties language = new Properties();
     
     private static final String lang = Locale.getDefault().toString();
+    private GuiManager guiManager;
     
     public static Main getInstance() {
         return main;
@@ -52,6 +46,7 @@ public class Main
         AdventureUtil.init(this);
         LangUtilsHook.initialize();
         PAPI.initialize();
+        guiManager = new GuiManager(this);
         long time = System.currentTimeMillis();
         main = this;
         if (lang.equalsIgnoreCase("zh_cn")) {
@@ -80,7 +75,7 @@ public class Main
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new Join(), this);
         pm.registerEvents(new Quit(), this);
-        pm.registerEvents(new GUIAction(), this);
+        pm.registerEvents(new GuiManager(this), this);
         pm.registerEvents(new EasyCommand(), this);
         pm.registerEvents(new ShopSign(), this);
         pm.registerEvents(new AuctionEvents(), this);
@@ -98,8 +93,8 @@ public class Main
     @Override
     public void onDisable() {
         int file = 0;
+        if (guiManager != null) guiManager.onDisable();
         Bukkit.getScheduler().cancelTask(file);
-        Bukkit.getOnlinePlayers().forEach(HumanEntity::closeInventory);
         GlobalMarket.getMarket().saveData();
         if (PluginControl.useMySQLStorage()) {
             try {
@@ -163,18 +158,20 @@ public class Main
                 DataUpdateThread.start();
                 RepricingTimeoutCheckThread = new Thread(() -> {
                     while (asyncRun) {
-                        GUIAction.repricing.keySet().stream().filter((value) -> (System.currentTimeMillis() >= Long.parseLong(GUIAction.repricing.get(value)[1].toString()))).forEachOrdered((value) -> {
+                        for (UUID uuid : Lists.newArrayList(GuiManager.repricing.keySet())) {
+                            Object[] objects = GuiManager.repricing.get(uuid);
+                            long outdateTime = Long.parseLong(objects[1].toString());
                             try {
-                                MarketGoods mg  = (MarketGoods) GUIAction.repricing.get(value)[0];
-                                Player p = Bukkit.getPlayer(value);
+                                MarketGoods mg  = (MarketGoods) objects[0];
+                                Player p = Bukkit.getPlayer(uuid);
                                 if (p != null) {
                                     Map<String, String> placeholders = new HashMap<>();
                                     placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
                                     MessageUtil.sendMessage(p, "Repricing-Undo", placeholders);
                                 }
-                                GUIAction.repricing.remove(value);
+                                GuiManager.repricing.remove(uuid);
                             } catch (ClassCastException ignored) {}
-                        });
+                        }
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException ex) {

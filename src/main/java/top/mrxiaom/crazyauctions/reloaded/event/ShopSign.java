@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import top.mrxiaom.crazyauctions.reloaded.Main;
+import top.mrxiaom.crazyauctions.reloaded.gui.GUI;
 import top.mrxiaom.crazyauctions.reloaded.util.FileManager;
 import top.mrxiaom.crazyauctions.reloaded.util.FileManager.Files;
 import top.mrxiaom.crazyauctions.reloaded.util.FileManager.ProtectedConfiguration;
@@ -43,7 +44,7 @@ public class ShopSign
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    GUIAction.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
+                                    GUI.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
                                 }
                             }.runTaskLater(Main.getInstance(), 1);
                         }
@@ -57,7 +58,7 @@ public class ShopSign
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    GUIAction.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
+                                    GUI.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
                                 }
                             }.runTaskLater(Main.getInstance(), 1);
                         }
@@ -77,7 +78,7 @@ public class ShopSign
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    GUIAction.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
+                                    GUI.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
                                 }
                             }.runTaskLater(Main.getInstance(), 1);
                         }

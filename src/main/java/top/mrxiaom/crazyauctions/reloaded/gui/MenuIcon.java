@@ -1,8 +1,8 @@
-package top.mrxiaom.crazyauctions.reloaded.util;
+package top.mrxiaom.crazyauctions.reloaded.gui;
 
 import org.bukkit.inventory.ItemStack;
 
-import static top.mrxiaom.crazyauctions.reloaded.util.GUI.putFlag;
+import static top.mrxiaom.crazyauctions.reloaded.gui.GUI.putFlag;
 
 public class MenuIcon {
     public final long uid;

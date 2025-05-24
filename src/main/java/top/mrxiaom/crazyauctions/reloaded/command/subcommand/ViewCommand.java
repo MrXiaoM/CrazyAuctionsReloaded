@@ -11,7 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import top.mrxiaom.crazyauctions.reloaded.Main;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommand;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommandType;
-import top.mrxiaom.crazyauctions.reloaded.event.GUIAction;
+import top.mrxiaom.crazyauctions.reloaded.gui.GUI;
 import top.mrxiaom.crazyauctions.reloaded.util.MessageUtil;
 import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
 
@@ -31,19 +31,19 @@ public class ViewCommand
         }
         if (args.length == 1) {
             if (!PluginControl.hasCommandPermission(sender, "View", true)) return;
-            GUIAction.openViewer(player, player.getUniqueId(), 0);
+            GUI.openViewer(player, player.getUniqueId(), 0);
             return;
         }
         if (args.length >= 2) {
             if (!PluginControl.hasCommandPermission(sender, "View-Others-Player", true)) return;
             Player target = Bukkit.getPlayer(args[1]);
             if (target != null) {
-                GUIAction.openViewer(player, target.getUniqueId(), 1);
+                GUI.openViewer(player, target.getUniqueId(), 1);
             } else {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        GUIAction.openViewer(player, Bukkit.getOfflinePlayer(args[1]).getUniqueId(), 1);
+                        GUI.openViewer(player, Bukkit.getOfflinePlayer(args[1]).getUniqueId(), 1);
                     }
                 }.runTaskLater(Main.getInstance(), 1);
             }

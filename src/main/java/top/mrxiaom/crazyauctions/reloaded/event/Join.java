@@ -20,8 +20,6 @@ public class Join
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        GUIAction.setCategory(player, Category.getDefaultCategory());
-        GUIAction.setShopType(player, ShopType.ANY);
         if (FileManager.isBackingUp() || FileManager.isRollingBack() || PluginControl.isWorldDisabled(player)) {
             return;
         }

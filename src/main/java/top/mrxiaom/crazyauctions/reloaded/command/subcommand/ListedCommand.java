@@ -8,9 +8,11 @@ import org.bukkit.entity.Player;
 
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommand;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommandType;
-import top.mrxiaom.crazyauctions.reloaded.event.GUIAction;
+import top.mrxiaom.crazyauctions.reloaded.gui.GUI;
+import top.mrxiaom.crazyauctions.reloaded.util.Category;
 import top.mrxiaom.crazyauctions.reloaded.util.MessageUtil;
 import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
+import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
 
 public class ListedCommand
     implements CrazyAuctionsSubCommand
@@ -27,7 +29,7 @@ public class ListedCommand
             MessageUtil.sendMessage(sender, "World-Disabled");
             return;
         }
-        GUIAction.openPlayersCurrentList(player, 1);
+        GUI.openPlayersCurrentList(player, ShopType.ANY, Category.getDefaultCategory(), 1);
     }
 
     @Override

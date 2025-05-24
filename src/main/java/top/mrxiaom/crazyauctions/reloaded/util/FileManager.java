@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -35,6 +34,7 @@ import top.mrxiaom.crazyauctions.reloaded.database.Storage;
 import top.mrxiaom.crazyauctions.reloaded.database.StorageMethod;
 import top.mrxiaom.crazyauctions.reloaded.database.engine.MySQLEngine;
 import top.mrxiaom.crazyauctions.reloaded.database.engine.SQLiteEngine;
+import top.mrxiaom.crazyauctions.reloaded.gui.GUI;
 import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
 import top.mrxiaom.crazyauctions.reloaded.util.enums.Version;
 
@@ -534,11 +534,7 @@ public class FileManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (GUI.openingGUI.containsKey(player.getUniqueId())) {
-                        player.closeInventory();
-                    }
-                }
+                GUI.closeAllGui();
             }
         }.runTask(main);
         prefix = "[" + main.getName() + "] ";

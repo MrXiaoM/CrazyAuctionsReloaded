@@ -24,7 +24,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommand;
@@ -34,6 +33,7 @@ import top.mrxiaom.crazyauctions.reloaded.database.Storage;
 import top.mrxiaom.crazyauctions.reloaded.database.StorageMethod;
 import top.mrxiaom.crazyauctions.reloaded.database.engine.MySQLEngine;
 import top.mrxiaom.crazyauctions.reloaded.database.engine.SQLiteEngine;
+import top.mrxiaom.crazyauctions.reloaded.gui.GUI;
 import top.mrxiaom.crazyauctions.reloaded.util.*;
 import top.mrxiaom.crazyauctions.reloaded.util.FileManager.Files;
 import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
@@ -140,7 +140,7 @@ public class AdminCommand
             return;
         }
         MessageUtil.sendMessage(sender, "Admin-Command.Backup.Starting");
-        Bukkit.getOnlinePlayers().stream().filter(player -> GUI.openingGUI.containsKey(player.getUniqueId())).forEach(HumanEntity::closeInventory);
+        GUI.closeAllGui();
         FileManager.backup(sender);
     }
 
@@ -156,7 +156,7 @@ public class AdminCommand
             File backupFile = new File("plugins/CrazyAuctionsReloaded/Backup/" + args[2]);
             if (backupFile.exists()) {
                 MessageUtil.sendMessage(sender, "Admin-Command.RollBack.Starting");
-                Bukkit.getOnlinePlayers().stream().filter(player -> GUI.openingGUI.containsKey(player.getUniqueId())).forEach(HumanEntity::closeInventory);
+                GUI.closeAllGui();
                 FileManager.rollBack(backupFile, sender);
             } else {
                 Map<String, String> placeholders = new HashMap<>();
@@ -981,7 +981,7 @@ public class AdminCommand
                 return;
             }
         }
-        GUI.openPlayersMail((Player) sender, 1, uuid);
+        GUI.openPlayersMail((Player) sender, ShopType.ANY, Category.getDefaultCategory(), 1, uuid);
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("%player%", name);
         MessageUtil.sendMessage(sender, "Admin-Command.Player.View.Succeeded", placeholders);
