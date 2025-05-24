@@ -621,9 +621,9 @@ public class PluginControl
                             Main.getInstance().getScheduler().runTask(() -> {
                                 Bukkit.getPluginManager().callEvent(event);
                             });
-                            Storage playerdata = Storage.getPlayer(getOfflinePlayer(owner));
-                            ItemMail im = new ItemMail(playerdata.makeUID(), getOfflinePlayer(owner), mg.getItem(), PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")), mg.getAddedTime(), false);
-                            playerdata.addItem(im);
+                            Storage playerData = Storage.getPlayer(getOfflinePlayer(owner));
+                            ItemMail im = new ItemMail(playerData.makeUID(), getOfflinePlayer(owner), mg.getItem(), PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")), mg.getAddedTime(), false);
+                            playerData.addItem(im);
                             market.removeGoods(mg.getUID());
                             break;
                         }
