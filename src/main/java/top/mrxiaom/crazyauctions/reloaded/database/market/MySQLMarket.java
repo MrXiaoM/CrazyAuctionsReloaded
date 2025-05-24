@@ -207,50 +207,56 @@ public class MySQLMarket
                 } else {
                     yamlMarket.loadFromString(stringYaml);
                 }
-                if (yamlMarket.get("Items") == null) return;
                 ConfigurationSection section = yamlMarket.getConfigurationSection("Items");
-                if (section != null) for (String path : section.getKeys(false)) {
-                    String[] owner = yamlMarket.getString("Items." + path + ".Owner", "").split(":");
-                    ShopType shoptype = ShopType.valueOf(yamlMarket.getString("Items." + path + ".ShopType", "").toUpperCase());
+                if (section != null) for (String path : Lists.newArrayList(section.getKeys(false))) {
+                    String[] owner = section.getString(path + ".Owner", "").split(":");
+                    String typeString = section.getString(path + ".ShopType", "");
+                    if (owner.length != 2 || typeString.isEmpty()) {
+                        YamlConfiguration save = new YamlConfiguration();
+                        save.set(path, section.getConfigurationSection(path));
+                        Main.getInstance().getLogger().warning("Skipped invalid market item:\n" + save.saveToString());
+                        continue;
+                    }
+                    ShopType shopType = ShopType.valueOf(typeString.toUpperCase());
                     MarketGoods goods;
-                    switch (shoptype) {
+                    switch (shopType) {
                         case SELL: {
                             goods = new MarketGoods(
-                                yamlMarket.getLong("Items." + path + ".UID"),
-                                shoptype,
-                                new ItemOwner(UUID.fromString(owner[1]), owner[0]),
-                                yamlMarket.getItemStack("Items." + path + ".Item"),
-                                yamlMarket.getLong("Items." + path + ".Time-Till-Expire"),
-                                yamlMarket.getLong("Items." + path + ".Full-Time"),
-                                yamlMarket.get("Items." + path + ".Added-Time") != null ? yamlMarket.getLong("Items." + path + ".Added-Time") : -1,
-                                yamlMarket.getDouble("Items." + path + ".Price")
+                                    section.getLong(path + ".UID"),
+                                    shopType,
+                                    new ItemOwner(UUID.fromString(owner[1]), owner[0]),
+                                    section.getItemStack(path + ".Item"),
+                                    section.getLong(path + ".Time-Till-Expire"),
+                                    section.getLong(path + ".Full-Time"),
+                                    section.get(path + ".Added-Time") != null ? section.getLong(path + ".Added-Time") : -1,
+                                    section.getDouble(path + ".Price")
                             );
                             break;
                         }
                         case BUY: {
                             goods = new MarketGoods(
-                                yamlMarket.getLong("Items." + path + ".UID"),
-                                shoptype,
-                                new ItemOwner(UUID.fromString(owner[1]), owner[0]),
-                                yamlMarket.getItemStack("Items." + path + ".Item"),
-                                yamlMarket.getLong("Items." + path + ".Time-Till-Expire"),
-                                yamlMarket.getLong("Items." + path + ".Full-Time"),
-                                yamlMarket.get("Items." + path + ".Added-Time") != null ? yamlMarket.getLong("Items." + path + ".Added-Time") : -1,
-                                yamlMarket.getDouble("Items." + path + ".Reward")
+                                    section.getLong(path + ".UID"),
+                                    shopType,
+                                    new ItemOwner(UUID.fromString(owner[1]), owner[0]),
+                                    section.getItemStack(path + ".Item"),
+                                    section.getLong(path + ".Time-Till-Expire"),
+                                    section.getLong(path + ".Full-Time"),
+                                    section.get(path + ".Added-Time") != null ? yamlMarket.getLong(path + ".Added-Time") : -1,
+                                    section.getDouble(path + ".Reward")
                             );
                             break;
                         }
                         case BID: {
                             goods = new MarketGoods(
-                                yamlMarket.getLong("Items." + path + ".UID"),
-                                shoptype,
-                                new ItemOwner(UUID.fromString(owner[1]), owner[0]),
-                                yamlMarket.getItemStack("Items." + path + ".Item"),
-                                yamlMarket.getLong("Items." + path + ".Time-Till-Expire"),
-                                yamlMarket.getLong("Items." + path + ".Full-Time"),
-                                yamlMarket.get("Items." + path + ".Added-Time") != null ? yamlMarket.getLong("Items." + path + ".Added-Time") : -1,
-                                yamlMarket.getDouble("Items." + path + ".Price"),
-                                yamlMarket.getString("Items." + path + ".TopBidder")
+                                    section.getLong(path + ".UID"),
+                                    shopType,
+                                    new ItemOwner(UUID.fromString(owner[1]), owner[0]),
+                                    section.getItemStack(path + ".Item"),
+                                    section.getLong(path + ".Time-Till-Expire"),
+                                    section.getLong(path + ".Full-Time"),
+                                    section.get(path + ".Added-Time") != null ? section.getLong(path + ".Added-Time") : -1,
+                                    section.getDouble(path + ".Price"),
+                                    section.getString(path + ".TopBidder")
                             );
                             break;
                         }
