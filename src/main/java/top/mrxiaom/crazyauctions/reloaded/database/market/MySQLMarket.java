@@ -30,8 +30,6 @@ public class MySQLMarket
     private static MySQLMarket instance;
     private static long lastUpdateTime = System.currentTimeMillis();
     
-    private final YamlConfiguration yamlMarket = new YamlConfiguration();
-    
     private MySQLMarket() {
         instance = MySQLMarket.this;
     }
@@ -143,46 +141,47 @@ public class MySQLMarket
     @Override
     public void saveData() {
         try {
-            yamlMarket.set("Items", null);
+            YamlConfiguration data = new YamlConfiguration();
             for (MarketGoods mg : marketGoods) {
                 long num = 1;
-                while (yamlMarket.contains("Items." + num)) num++;
-                yamlMarket.set("Items." + num + ".Owner", mg.getItemOwner().toString());
+                while (data.contains("Items." + num)) num++;
+                data.set("Items." + num + ".Owner", mg.getItemOwner().toString());
                 switch (mg.getShopType()) {
                     case SELL: {
-                        yamlMarket.set("Items." + num + ".Price", mg.getPrice());
-                        yamlMarket.set("Items." + num + ".ShopType", "SELL");
-                        yamlMarket.set("Items." + num + ".Time-Till-Expire", mg.getTimeTillExpire());
-                        yamlMarket.set("Items." + num + ".Full-Time", mg.getFullTime());
-                        yamlMarket.set("Items." + num + ".UID", mg.getUID());
-                        yamlMarket.set("Items." + num + ".Item", mg.getItem());
+                        data.set("Items." + num + ".Price", mg.getPrice());
+                        data.set("Items." + num + ".ShopType", "SELL");
+                        data.set("Items." + num + ".Time-Till-Expire", mg.getTimeTillExpire());
+                        data.set("Items." + num + ".Full-Time", mg.getFullTime());
+                        data.set("Items." + num + ".UID", mg.getUID());
+                        data.set("Items." + num + ".Item", mg.getItem());
                         break;
                     }
                     case BUY: {
-                        yamlMarket.set("Items." + num + ".Reward", mg.getReward());
-                        yamlMarket.set("Items." + num + ".ShopType", "BUY");
-                        yamlMarket.set("Items." + num + ".Time-Till-Expire", mg.getTimeTillExpire());
-                        yamlMarket.set("Items." + num + ".Full-Time", mg.getFullTime());
-                        yamlMarket.set("Items." + num + ".UID", mg.getUID());
-                        yamlMarket.set("Items." + num + ".Item", mg.getItem());
+                        data.set("Items." + num + ".Reward", mg.getReward());
+                        data.set("Items." + num + ".ShopType", "BUY");
+                        data.set("Items." + num + ".Time-Till-Expire", mg.getTimeTillExpire());
+                        data.set("Items." + num + ".Full-Time", mg.getFullTime());
+                        data.set("Items." + num + ".UID", mg.getUID());
+                        data.set("Items." + num + ".Item", mg.getItem());
                         break;
                     }
                     case BID: {
-                        yamlMarket.set("Items." + num + ".Price", mg.getPrice());
-                        yamlMarket.set("Items." + num + ".ShopType", "BID");
-                        yamlMarket.set("Items." + num + ".TopBidder", mg.getTopBidder());
-                        yamlMarket.set("Items." + num + ".Time-Till-Expire", mg.getTimeTillExpire());
-                        yamlMarket.set("Items." + num + ".Full-Time", mg.getFullTime());
-                        yamlMarket.set("Items." + num + ".UID", mg.getUID());
-                        yamlMarket.set("Items." + num + ".Item", mg.getItem());
+                        data.set("Items." + num + ".Price", mg.getPrice());
+                        data.set("Items." + num + ".ShopType", "BID");
+                        data.set("Items." + num + ".TopBidder", mg.getTopBidder());
+                        data.set("Items." + num + ".Time-Till-Expire", mg.getTimeTillExpire());
+                        data.set("Items." + num + ".Full-Time", mg.getFullTime());
+                        data.set("Items." + num + ".UID", mg.getUID());
+                        data.set("Items." + num + ".Item", mg.getItem());
                         break;
                     }
                 }
             }
             PreparedStatement statement = getConnection().prepareStatement("UPDATE " + getDatabaseName() + "." + getMarketTable() + " SET "
                     + "YamlMarket = ?");
-            statement.setString(1, yamlMarket.saveToString());
+            statement.setString(1, data.saveToString());
             executeUpdate(statement);
+            lastValidData = data;
         } catch (SQLException ex) {
             if (Main.language.get("MySQL-DataSavingError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("MySQL-DataSavingError").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
             try {
@@ -201,13 +200,14 @@ public class MySQLMarket
             ResultSet rs = executeQuery(statement);
             marketGoods.clear();
             if (rs != null && rs.next()) {
+                YamlConfiguration data = new YamlConfiguration();
                 String stringYaml = rs.getString("YamlMarket");
                 if (stringYaml.isEmpty()) {
                     return;
                 } else {
-                    yamlMarket.loadFromString(stringYaml);
+                    data.loadFromString(stringYaml);
                 }
-                ConfigurationSection section = yamlMarket.getConfigurationSection("Items");
+                ConfigurationSection section = data.getConfigurationSection("Items");
                 if (section != null) for (String path : Lists.newArrayList(section.getKeys(false))) {
                     String[] owner = section.getString(path + ".Owner", "").split(":");
                     String typeString = section.getString(path + ".ShopType", "");
@@ -241,7 +241,7 @@ public class MySQLMarket
                                     section.getItemStack(path + ".Item"),
                                     section.getLong(path + ".Time-Till-Expire"),
                                     section.getLong(path + ".Full-Time"),
-                                    section.get(path + ".Added-Time") != null ? yamlMarket.getLong(path + ".Added-Time") : -1,
+                                    section.get(path + ".Added-Time") != null ? data.getLong(path + ".Added-Time") : -1,
                                     section.getDouble(path + ".Reward")
                             );
                             break;
@@ -266,6 +266,7 @@ public class MySQLMarket
                     }
                     marketGoods.add(goods);
                 }
+                lastValidData = data;
             } else {
                 PreparedStatement createMarket = getConnection().prepareStatement("INSERT INTO " + getDatabaseName() + "." + getMarketTable() + " (YamlMarket) VALUES(?)");
                 createMarket.setString(1, "{}");
@@ -287,9 +288,10 @@ public class MySQLMarket
             PluginControl.printStackTrace(ex);
         }
     }
-    
+
+    private YamlConfiguration lastValidData = new YamlConfiguration();
     @Override
     public YamlConfiguration getYamlData() {
-        return yamlMarket;
+        return lastValidData;
     }
 }

@@ -29,9 +29,7 @@ public class SQLiteMarket
     
     private static SQLiteMarket instance;
     private static long lastUpdateTime = System.currentTimeMillis();
-    
-    private final YamlConfiguration yamlMarket = new YamlConfiguration();
-    
+
     private SQLiteMarket() {
         instance = SQLiteMarket.this;
     }
@@ -143,46 +141,48 @@ public class SQLiteMarket
     @Override
     public void saveData() {
         try {
-            yamlMarket.set("Items", null);
+            YamlConfiguration data = new YamlConfiguration();
+            data.set("Items", null);
             for (MarketGoods mg : marketGoods) {
                 long num = 1;
-                while (yamlMarket.contains("Items." + num)) num++;
-                yamlMarket.set("Items." + num + ".Owner", mg.getItemOwner().toString());
+                while (data.contains("Items." + num)) num++;
+                data.set("Items." + num + ".Owner", mg.getItemOwner().toString());
                 switch (mg.getShopType()) {
                     case SELL: {
-                        yamlMarket.set("Items." + num + ".Price", mg.getPrice());
-                        yamlMarket.set("Items." + num + ".ShopType", "SELL");
-                        yamlMarket.set("Items." + num + ".Time-Till-Expire", mg.getTimeTillExpire());
-                        yamlMarket.set("Items." + num + ".Full-Time", mg.getFullTime());
-                        yamlMarket.set("Items." + num + ".UID", mg.getUID());
-                        yamlMarket.set("Items." + num + ".Item", mg.getItem());
+                        data.set("Items." + num + ".Price", mg.getPrice());
+                        data.set("Items." + num + ".ShopType", "SELL");
+                        data.set("Items." + num + ".Time-Till-Expire", mg.getTimeTillExpire());
+                        data.set("Items." + num + ".Full-Time", mg.getFullTime());
+                        data.set("Items." + num + ".UID", mg.getUID());
+                        data.set("Items." + num + ".Item", mg.getItem());
                         break;
                     }
                     case BUY: {
-                        yamlMarket.set("Items." + num + ".Reward", mg.getReward());
-                        yamlMarket.set("Items." + num + ".ShopType", "BUY");
-                        yamlMarket.set("Items." + num + ".Time-Till-Expire", mg.getTimeTillExpire());
-                        yamlMarket.set("Items." + num + ".Full-Time", mg.getFullTime());
-                        yamlMarket.set("Items." + num + ".UID", mg.getUID());
-                        yamlMarket.set("Items." + num + ".Item", mg.getItem());
+                        data.set("Items." + num + ".Reward", mg.getReward());
+                        data.set("Items." + num + ".ShopType", "BUY");
+                        data.set("Items." + num + ".Time-Till-Expire", mg.getTimeTillExpire());
+                        data.set("Items." + num + ".Full-Time", mg.getFullTime());
+                        data.set("Items." + num + ".UID", mg.getUID());
+                        data.set("Items." + num + ".Item", mg.getItem());
                         break;
                     }
                     case BID: {
-                        yamlMarket.set("Items." + num + ".Price", mg.getPrice());
-                        yamlMarket.set("Items." + num + ".ShopType", "BID");
-                        yamlMarket.set("Items." + num + ".TopBidder", mg.getTopBidder());
-                        yamlMarket.set("Items." + num + ".Time-Till-Expire", mg.getTimeTillExpire());
-                        yamlMarket.set("Items." + num + ".Full-Time", mg.getFullTime());
-                        yamlMarket.set("Items." + num + ".UID", mg.getUID());
-                        yamlMarket.set("Items." + num + ".Item", mg.getItem());
+                        data.set("Items." + num + ".Price", mg.getPrice());
+                        data.set("Items." + num + ".ShopType", "BID");
+                        data.set("Items." + num + ".TopBidder", mg.getTopBidder());
+                        data.set("Items." + num + ".Time-Till-Expire", mg.getTimeTillExpire());
+                        data.set("Items." + num + ".Full-Time", mg.getFullTime());
+                        data.set("Items." + num + ".UID", mg.getUID());
+                        data.set("Items." + num + ".Item", mg.getItem());
                         break;
                     }
                 }
             }
             PreparedStatement statement = getConnection().prepareStatement("UPDATE " + getMarketTable() + " SET "
                     + "YamlMarket = ?");
-            statement.setString(1, yamlMarket.saveToString());
+            statement.setString(1, data.saveToString());
             executeUpdate(statement);
+            lastValidData = data;
         } catch (SQLException ex) {
             if (Main.language.get("SQLite-DataSavingError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-DataSavingError").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
             try {
@@ -201,56 +201,57 @@ public class SQLiteMarket
             ResultSet rs = executeQuery(statement);
             marketGoods.clear();
             if (rs != null && rs.next()) {
+                YamlConfiguration data = new YamlConfiguration();
                 String stringYaml = rs.getString("YamlMarket");
                 if (stringYaml.isEmpty()) {
                     return;
                 } else {
-                    yamlMarket.loadFromString(stringYaml);
+                    data.loadFromString(stringYaml);
                 }
-                ConfigurationSection section = yamlMarket.getConfigurationSection("Items");
+                ConfigurationSection section = data.getConfigurationSection("Items");
                 if (section == null) return;
                 for (String path : section.getKeys(false)) {
-                    String[] owner = yamlMarket.getString("Items." + path + ".Owner", "").split(":");
-                    ShopType shoptype = ShopType.valueOf(yamlMarket.getString("Items." + path + ".ShopType", "").toUpperCase());
+                    String[] owner = data.getString("Items." + path + ".Owner", "").split(":");
+                    ShopType shoptype = ShopType.valueOf(data.getString("Items." + path + ".ShopType", "").toUpperCase());
                     MarketGoods goods;
                     switch (shoptype) {
                         case SELL: {
                             goods = new MarketGoods(
-                                yamlMarket.getLong("Items." + path + ".UID"),
+                                data.getLong("Items." + path + ".UID"),
                                 shoptype,
                                 new ItemOwner(UUID.fromString(owner[1]), owner[0]),
-                                yamlMarket.getItemStack("Items." + path + ".Item"),
-                                yamlMarket.getLong("Items." + path + ".Time-Till-Expire"),
-                                yamlMarket.getLong("Items." + path + ".Full-Time"),
-                                yamlMarket.get("Items." + path + ".Added-Time") != null ? yamlMarket.getLong("Items." + path + ".Added-Time") : -1,
-                                yamlMarket.getDouble("Items." + path + ".Price")
+                                data.getItemStack("Items." + path + ".Item"),
+                                data.getLong("Items." + path + ".Time-Till-Expire"),
+                                data.getLong("Items." + path + ".Full-Time"),
+                                data.get("Items." + path + ".Added-Time") != null ? data.getLong("Items." + path + ".Added-Time") : -1,
+                                data.getDouble("Items." + path + ".Price")
                             );
                             break;
                         }
                         case BUY: {
                             goods = new MarketGoods(
-                                yamlMarket.getLong("Items." + path + ".UID"),
+                                data.getLong("Items." + path + ".UID"),
                                 shoptype,
                                 new ItemOwner(UUID.fromString(owner[1]), owner[0]),
-                                yamlMarket.getItemStack("Items." + path + ".Item"),
-                                yamlMarket.getLong("Items." + path + ".Time-Till-Expire"),
-                                yamlMarket.getLong("Items." + path + ".Full-Time"),
-                                yamlMarket.get("Items." + path + ".Added-Time") != null ? yamlMarket.getLong("Items." + path + ".Added-Time") : -1,
-                                yamlMarket.getDouble("Items." + path + ".Reward")
+                                data.getItemStack("Items." + path + ".Item"),
+                                data.getLong("Items." + path + ".Time-Till-Expire"),
+                                data.getLong("Items." + path + ".Full-Time"),
+                                data.get("Items." + path + ".Added-Time") != null ? data.getLong("Items." + path + ".Added-Time") : -1,
+                                data.getDouble("Items." + path + ".Reward")
                             );
                             break;
                         }
                         case BID: {
                             goods = new MarketGoods(
-                                yamlMarket.getLong("Items." + path + ".UID"),
+                                data.getLong("Items." + path + ".UID"),
                                 shoptype,
                                 new ItemOwner(UUID.fromString(owner[1]), owner[0]),
-                                yamlMarket.getItemStack("Items." + path + ".Item"),
-                                yamlMarket.getLong("Items." + path + ".Time-Till-Expire"),
-                                yamlMarket.getLong("Items." + path + ".Full-Time"),
-                                yamlMarket.get("Items." + path + ".Added-Time") != null ? yamlMarket.getLong("Items." + path + ".Added-Time") : -1,
-                                yamlMarket.getDouble("Items." + path + ".Price"),
-                                yamlMarket.getString("Items." + path + ".TopBidder")
+                                data.getItemStack("Items." + path + ".Item"),
+                                data.getLong("Items." + path + ".Time-Till-Expire"),
+                                data.getLong("Items." + path + ".Full-Time"),
+                                data.get("Items." + path + ".Added-Time") != null ? data.getLong("Items." + path + ".Added-Time") : -1,
+                                data.getDouble("Items." + path + ".Price"),
+                                data.getString("Items." + path + ".TopBidder")
                             );
                             break;
                         }
@@ -260,6 +261,7 @@ public class SQLiteMarket
                     }
                     marketGoods.add(goods);
                 }
+                lastValidData = data;
             } else {
                 PreparedStatement createMarket = getConnection().prepareStatement("INSERT INTO " + getMarketTable() + " (YamlMarket) VALUES(?)");
                 createMarket.setString(1, "{}");
@@ -281,9 +283,10 @@ public class SQLiteMarket
             PluginControl.printStackTrace(ex);
         }
     }
-    
+
+    private YamlConfiguration lastValidData = new YamlConfiguration();
     @Override
     public YamlConfiguration getYamlData() {
-        return yamlMarket;
+        return lastValidData;
     }
 }
