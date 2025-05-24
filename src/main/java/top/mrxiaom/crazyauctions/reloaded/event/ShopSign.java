@@ -10,7 +10,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import top.mrxiaom.crazyauctions.reloaded.Main;
 import top.mrxiaom.crazyauctions.reloaded.gui.GUI;
@@ -41,12 +40,9 @@ public class ShopSign
                     Sign sign = (Sign) clickedBlock.getState();
                     if (sign.getLine(0) != null && sign.getLine(0).equalsIgnoreCase(config.getString("Settings.Shop-Sign.Title-Format"))) {
                         if (sign.getLine(1) != null) {
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    GUI.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
-                                }
-                            }.runTaskLater(Main.getInstance(), 1);
+                            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                                GUI.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
+                            }, 1L);
                         }
                     }
                 }
@@ -55,12 +51,9 @@ public class ShopSign
                     Sign sign = (Sign) clickedBlock.getState();
                     if (sign.getLine(0) != null && sign.getLine(0).equalsIgnoreCase(config.getString("Settings.Shop-Sign.Title-Format"))) {
                         if (sign.getLine(1) != null) {
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    GUI.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
-                                }
-                            }.runTaskLater(Main.getInstance(), 1);
+                            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                                GUI.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
+                            }, 1L);
                         }
                     }
                 }
@@ -75,12 +68,9 @@ public class ShopSign
                     Sign sign = (Sign) clickedBlock.getState();
                     if (sign.getLine(0) != null && sign.getLine(0).equalsIgnoreCase(config.getString("Settings.Shop-Sign.Title-Format"))) {
                         if (sign.getLine(1) != null) {
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    GUI.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
-                                }
-                            }.runTaskLater(Main.getInstance(), 1);
+                            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                                GUI.openViewer(p, Bukkit.getOfflinePlayer(sign.getLine(1)).getUniqueId(), 1);
+                            }, 1L);
                         }
                     }
                 }

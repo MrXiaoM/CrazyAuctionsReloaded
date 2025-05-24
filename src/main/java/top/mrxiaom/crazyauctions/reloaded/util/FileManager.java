@@ -8,7 +8,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
@@ -534,12 +533,7 @@ public class FileManager {
     }
     
     public FileManager setup(Main main) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                GUI.closeAllGui();
-            }
-        }.runTask(main);
+        Bukkit.getScheduler().runTask(main, GUI::closeAllGui);
         prefix = "[" + main.getName() + "] ";
         this.main = main;
         if (!main.getDataFolder().exists()) {

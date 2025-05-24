@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import org.bukkit.scheduler.BukkitTask;
 import top.mrxiaom.crazyauctions.reloaded.Main;
@@ -97,12 +96,9 @@ public class AuctionProcess {
                             if (PluginControl.isOnline(buyer) && PluginControl.getPlayer(buyer) != null) {
                                 Player player = Bukkit.getPlayer(buyer);
                                 AuctionWinBidEvent event = new AuctionWinBidEvent(player, mg, price);
-                                new BukkitRunnable() {
-                                    @Override
-                                    public void run() {
-                                        Bukkit.getPluginManager().callEvent(event);
-                                    }
-                                }.runTask(Main.getInstance());
+                                Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                                    Bukkit.getPluginManager().callEvent(event);
+                                });
                                 MessageUtil.sendMessage(player, "Win-Bidding", placeholders);
                             }
                             Player player = Bukkit.getPlayer(seller);

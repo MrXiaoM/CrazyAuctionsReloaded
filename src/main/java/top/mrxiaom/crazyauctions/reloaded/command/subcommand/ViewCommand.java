@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import top.mrxiaom.crazyauctions.reloaded.Main;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommand;
@@ -40,12 +39,9 @@ public class ViewCommand
             if (target != null) {
                 GUI.openViewer(player, target.getUniqueId(), 1);
             } else {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        GUI.openViewer(player, Bukkit.getOfflinePlayer(args[1]).getUniqueId(), 1);
-                    }
-                }.runTaskLater(Main.getInstance(), 1);
+                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                    GUI.openViewer(player, Bukkit.getOfflinePlayer(args[1]).getUniqueId(), 1);
+                }, 1L);
             }
             return;
         }

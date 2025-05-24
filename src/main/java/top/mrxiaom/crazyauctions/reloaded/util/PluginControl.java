@@ -21,7 +21,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -631,12 +630,10 @@ public class PluginControl
                                 MessageUtil.sendMessage(player, "Item-Has-Expired", placeholders);
                             }
                             AuctionExpireEvent event = new AuctionExpireEvent(player, mg, ShopType.BUY);
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    Bukkit.getPluginManager().callEvent(event);
-                                }
-                            }.runTask(Main.getInstance());
+
+                            Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                                Bukkit.getPluginManager().callEvent(event);
+                            });
                             CurrencyManager.addMoney(Bukkit.getOfflinePlayer(owner), mg.getReward());
                             market.removeGoods(mg.getUID());
                             break;
@@ -650,12 +647,10 @@ public class PluginControl
                                 MessageUtil.sendMessage(player, "Item-Has-Expired", placeholders);
                             }
                             AuctionExpireEvent event = new AuctionExpireEvent(player, mg, ShopType.SELL);
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    Bukkit.getPluginManager().callEvent(event);
-                                }
-                            }.runTask(Main.getInstance());
+
+                            Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                                Bukkit.getPluginManager().callEvent(event);
+                            });
                             Storage playerdata = Storage.getPlayer(getOfflinePlayer(owner));
                             ItemMail im = new ItemMail(playerdata.makeUID(), getOfflinePlayer(owner), mg.getItem(), PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")), mg.getAddedTime(), false);
                             playerdata.addItem(im);
