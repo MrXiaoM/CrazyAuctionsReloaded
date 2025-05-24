@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import top.mrxiaom.crazyauctions.reloaded.api.events.AuctionNewBidEvent;
 import top.mrxiaom.crazyauctions.reloaded.currency.CurrencyManager;
 import top.mrxiaom.crazyauctions.reloaded.database.GlobalMarket;
-import top.mrxiaom.crazyauctions.reloaded.util.MarketGoods;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 import top.mrxiaom.crazyauctions.reloaded.util.MessageUtil;
 import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
 

@@ -22,7 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import top.mrxiaom.crazyauctions.reloaded.Main;
 import top.mrxiaom.crazyauctions.reloaded.database.Storage;
 import top.mrxiaom.crazyauctions.reloaded.database.engine.MySQLEngine;
-import top.mrxiaom.crazyauctions.reloaded.util.ItemMail;
+import top.mrxiaom.crazyauctions.reloaded.data.ItemMail;
 import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
 
 public class MySQLStorage

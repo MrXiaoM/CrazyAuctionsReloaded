@@ -1,4 +1,6 @@
-package top.mrxiaom.crazyauctions.reloaded.util;
+package top.mrxiaom.crazyauctions.reloaded.data;
+
+import top.mrxiaom.crazyauctions.reloaded.util.FileManager;
 
 public class MarketGroup
 {

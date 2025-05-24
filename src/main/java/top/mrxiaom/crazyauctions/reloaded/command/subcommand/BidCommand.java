@@ -19,11 +19,11 @@ import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommandType;
 import top.mrxiaom.crazyauctions.reloaded.currency.CurrencyManager;
 import top.mrxiaom.crazyauctions.reloaded.database.GlobalMarket;
 import top.mrxiaom.crazyauctions.reloaded.util.FileManager;
-import top.mrxiaom.crazyauctions.reloaded.util.ItemOwner;
-import top.mrxiaom.crazyauctions.reloaded.util.MarketGoods;
+import top.mrxiaom.crazyauctions.reloaded.data.ItemOwner;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 import top.mrxiaom.crazyauctions.reloaded.util.MessageUtil;
 import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
 import top.mrxiaom.crazyauctions.reloaded.util.enums.Version;
 
 public class BidCommand

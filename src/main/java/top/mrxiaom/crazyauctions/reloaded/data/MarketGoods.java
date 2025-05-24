@@ -1,10 +1,11 @@
-package top.mrxiaom.crazyauctions.reloaded.util;
+package top.mrxiaom.crazyauctions.reloaded.data;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 
 import top.mrxiaom.crazyauctions.reloaded.database.GlobalMarket;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.util.FileManager;
+import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
 
 /**
  * For processing goods on the market.

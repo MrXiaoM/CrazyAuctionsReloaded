@@ -3,8 +3,6 @@ package top.mrxiaom.crazyauctions.reloaded.event;
 import org.bukkit.Bukkit;
 import top.mrxiaom.crazyauctions.reloaded.Main;
 import top.mrxiaom.crazyauctions.reloaded.util.MessageUtil;
-import top.mrxiaom.crazyauctions.reloaded.util.Category;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
 import top.mrxiaom.crazyauctions.reloaded.util.FileManager;
 import top.mrxiaom.crazyauctions.reloaded.util.FileManager.Files;
 import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;

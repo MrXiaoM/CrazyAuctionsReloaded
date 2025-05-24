@@ -15,9 +15,10 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 import top.mrxiaom.crazyauctions.reloaded.Main;
 import top.mrxiaom.crazyauctions.reloaded.currency.CurrencyManager;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 import top.mrxiaom.crazyauctions.reloaded.gui.IGui;
 import top.mrxiaom.crazyauctions.reloaded.util.*;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
 
 import java.util.HashMap;
 import java.util.List;

@@ -14,9 +14,11 @@ import org.bukkit.scheduler.BukkitTask;
 import top.mrxiaom.crazyauctions.reloaded.Main;
 import top.mrxiaom.crazyauctions.reloaded.api.events.AuctionWinBidEvent;
 import top.mrxiaom.crazyauctions.reloaded.currency.CurrencyManager;
+import top.mrxiaom.crazyauctions.reloaded.data.ItemMail;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 import top.mrxiaom.crazyauctions.reloaded.database.GlobalMarket;
 import top.mrxiaom.crazyauctions.reloaded.database.Storage;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
 
 public class AuctionProcess {
     private static BukkitTask task;

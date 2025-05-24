@@ -29,13 +29,16 @@ import java.util.Map;
 import java.util.UUID;
 
 import top.mrxiaom.crazyauctions.reloaded.Main;
+import top.mrxiaom.crazyauctions.reloaded.data.ItemMail;
+import top.mrxiaom.crazyauctions.reloaded.data.ItemOwner;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 import top.mrxiaom.crazyauctions.reloaded.database.GlobalMarket;
 import top.mrxiaom.crazyauctions.reloaded.database.Storage;
 import top.mrxiaom.crazyauctions.reloaded.database.StorageMethod;
 import top.mrxiaom.crazyauctions.reloaded.database.engine.MySQLEngine;
 import top.mrxiaom.crazyauctions.reloaded.database.engine.SQLiteEngine;
 import top.mrxiaom.crazyauctions.reloaded.gui.GUI;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
 import top.mrxiaom.crazyauctions.reloaded.util.enums.Version;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")

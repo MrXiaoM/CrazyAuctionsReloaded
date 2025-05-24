@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommand;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommandType;
+import top.mrxiaom.crazyauctions.reloaded.data.*;
 import top.mrxiaom.crazyauctions.reloaded.database.GlobalMarket;
 import top.mrxiaom.crazyauctions.reloaded.database.Storage;
 import top.mrxiaom.crazyauctions.reloaded.database.StorageMethod;
@@ -36,7 +37,6 @@ import top.mrxiaom.crazyauctions.reloaded.database.engine.SQLiteEngine;
 import top.mrxiaom.crazyauctions.reloaded.gui.GUI;
 import top.mrxiaom.crazyauctions.reloaded.util.*;
 import top.mrxiaom.crazyauctions.reloaded.util.FileManager.Files;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
 
 public class AdminCommand
     implements CrazyAuctionsSubCommand

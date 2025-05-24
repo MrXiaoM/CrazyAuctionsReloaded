@@ -1,4 +1,4 @@
-package top.mrxiaom.crazyauctions.reloaded.util;
+package top.mrxiaom.crazyauctions.reloaded.data;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.ItemMeta;
+import top.mrxiaom.crazyauctions.reloaded.util.FileManager;
+import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
 
 public class Category {
     

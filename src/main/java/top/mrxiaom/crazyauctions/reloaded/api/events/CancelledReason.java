@@ -1,4 +1,4 @@
-package top.mrxiaom.crazyauctions.reloaded.util.enums;
+package top.mrxiaom.crazyauctions.reloaded.api.events;
 
 public enum CancelledReason
 {

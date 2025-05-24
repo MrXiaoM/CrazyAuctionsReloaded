@@ -1,8 +1,8 @@
 package top.mrxiaom.crazyauctions.reloaded.api.events;
 
 import org.jetbrains.annotations.NotNull;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
-import top.mrxiaom.crazyauctions.reloaded.util.MarketGoods;
+import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

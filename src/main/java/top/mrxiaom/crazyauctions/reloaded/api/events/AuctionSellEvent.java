@@ -5,7 +5,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import org.jetbrains.annotations.NotNull;
-import top.mrxiaom.crazyauctions.reloaded.util.MarketGoods;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 
 /**
  * @author TRCStudioDean

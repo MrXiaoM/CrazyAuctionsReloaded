@@ -16,10 +16,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import top.mrxiaom.crazyauctions.reloaded.Main;
 import top.mrxiaom.crazyauctions.reloaded.database.GlobalMarket;
 import top.mrxiaom.crazyauctions.reloaded.database.engine.MySQLEngine;
-import top.mrxiaom.crazyauctions.reloaded.util.ItemOwner;
-import top.mrxiaom.crazyauctions.reloaded.util.MarketGoods;
+import top.mrxiaom.crazyauctions.reloaded.data.ItemOwner;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
 
 public class MySQLMarket
     extends MySQLEngine

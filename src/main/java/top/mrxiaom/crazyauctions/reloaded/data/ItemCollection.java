@@ -1,4 +1,4 @@
-package top.mrxiaom.crazyauctions.reloaded.util;
+package top.mrxiaom.crazyauctions.reloaded.data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.Objects;
 import org.bukkit.inventory.ItemStack;
 
 import org.bukkit.inventory.meta.ItemMeta;
+import top.mrxiaom.crazyauctions.reloaded.util.FileManager;
 
 public class ItemCollection
 {

@@ -11,9 +11,9 @@ import top.mrxiaom.crazyauctions.reloaded.api.events.AuctionNewBidEvent;
 import top.mrxiaom.crazyauctions.reloaded.api.events.AuctionWinBidEvent;
 import top.mrxiaom.crazyauctions.reloaded.util.AuctionProcess;
 import top.mrxiaom.crazyauctions.reloaded.util.LangUtilsHook;
-import top.mrxiaom.crazyauctions.reloaded.util.MarketGoods;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
 import top.mrxiaom.crazyauctions.reloaded.util.*;
 
 public class AuctionEvents

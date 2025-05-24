@@ -1,6 +1,7 @@
 package top.mrxiaom.crazyauctions.reloaded.util;
 
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
+import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
 import top.mrxiaom.crazyauctions.reloaded.database.GlobalMarket;
 
 import org.bukkit.entity.Player;

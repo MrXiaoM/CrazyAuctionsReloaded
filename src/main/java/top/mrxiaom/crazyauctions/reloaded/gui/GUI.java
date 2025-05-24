@@ -19,9 +19,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.mrxiaom.crazyauctions.reloaded.data.Category;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 import top.mrxiaom.crazyauctions.reloaded.event.GuiManager;
 import top.mrxiaom.crazyauctions.reloaded.util.*;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
 
 public class GUI {
     public static final String ICON_KEY = "CrazyAuctionsReloaded_ICON";

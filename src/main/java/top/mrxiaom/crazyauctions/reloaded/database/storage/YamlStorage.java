@@ -21,7 +21,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import top.mrxiaom.crazyauctions.reloaded.util.ItemMail;
+import top.mrxiaom.crazyauctions.reloaded.data.ItemMail;
 import top.mrxiaom.crazyauctions.reloaded.database.Storage;
 import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
 

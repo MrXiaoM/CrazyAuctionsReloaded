@@ -2,7 +2,7 @@ package top.mrxiaom.crazyauctions.reloaded.database;
 
 import java.util.List;
 
-import top.mrxiaom.crazyauctions.reloaded.util.ItemMail;
+import top.mrxiaom.crazyauctions.reloaded.data.ItemMail;
 
 public interface ItemMailBox
 {

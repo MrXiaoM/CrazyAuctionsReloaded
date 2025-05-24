@@ -7,7 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import top.mrxiaom.crazyauctions.reloaded.database.market.MySQLMarket;
 import top.mrxiaom.crazyauctions.reloaded.database.market.SQLiteMarket;
 import top.mrxiaom.crazyauctions.reloaded.database.market.YamlMarket;
-import top.mrxiaom.crazyauctions.reloaded.util.MarketGoods;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
 
 public interface GlobalMarket

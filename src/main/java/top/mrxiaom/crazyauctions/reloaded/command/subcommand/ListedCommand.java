@@ -9,10 +9,10 @@ import org.bukkit.entity.Player;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommand;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommandType;
 import top.mrxiaom.crazyauctions.reloaded.gui.GUI;
-import top.mrxiaom.crazyauctions.reloaded.util.Category;
+import top.mrxiaom.crazyauctions.reloaded.data.Category;
 import top.mrxiaom.crazyauctions.reloaded.util.MessageUtil;
 import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
 
 public class ListedCommand
     implements CrazyAuctionsSubCommand

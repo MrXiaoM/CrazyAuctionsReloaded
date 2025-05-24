@@ -7,11 +7,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import top.mrxiaom.crazyauctions.reloaded.database.GlobalMarket;
 import top.mrxiaom.crazyauctions.reloaded.database.Storage;
-import top.mrxiaom.crazyauctions.reloaded.util.Category;
-import top.mrxiaom.crazyauctions.reloaded.util.ItemMail;
+import top.mrxiaom.crazyauctions.reloaded.data.Category;
+import top.mrxiaom.crazyauctions.reloaded.data.ItemMail;
 import top.mrxiaom.crazyauctions.reloaded.util.MessageUtil;
 import top.mrxiaom.crazyauctions.reloaded.util.PluginControl;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
 
 import java.text.SimpleDateFormat;
 import java.util.*;

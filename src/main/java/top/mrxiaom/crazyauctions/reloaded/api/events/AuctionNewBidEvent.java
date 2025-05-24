@@ -5,7 +5,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import org.jetbrains.annotations.NotNull;
-import top.mrxiaom.crazyauctions.reloaded.util.MarketGoods;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 
 /**
  * This event is fired when a player places a new bid onto an item in the auction house.

@@ -28,6 +28,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import top.mrxiaom.crazyauctions.reloaded.Main;
 import top.mrxiaom.crazyauctions.reloaded.api.events.AuctionExpireEvent;
 import top.mrxiaom.crazyauctions.reloaded.currency.CurrencyManager;
+import top.mrxiaom.crazyauctions.reloaded.data.ItemMail;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGroup;
 import top.mrxiaom.crazyauctions.reloaded.database.DatabaseEngine;
 import top.mrxiaom.crazyauctions.reloaded.database.GlobalMarket;
 import top.mrxiaom.crazyauctions.reloaded.database.Storage;
@@ -41,7 +44,7 @@ import top.mrxiaom.crazyauctions.reloaded.database.storage.MySQLStorage;
 import top.mrxiaom.crazyauctions.reloaded.database.storage.SQLiteStorage;
 import top.mrxiaom.crazyauctions.reloaded.database.storage.YamlStorage;
 import top.mrxiaom.crazyauctions.reloaded.util.enums.Version;
-import top.mrxiaom.crazyauctions.reloaded.util.enums.ShopType;
+import top.mrxiaom.crazyauctions.reloaded.data.ShopType;
 import top.mrxiaom.crazyauctions.reloaded.util.FileManager.*;
 
 public class PluginControl

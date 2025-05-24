@@ -1,4 +1,4 @@
-package top.mrxiaom.crazyauctions.reloaded.util;
+package top.mrxiaom.crazyauctions.reloaded.data;
 
 import java.util.UUID;
 

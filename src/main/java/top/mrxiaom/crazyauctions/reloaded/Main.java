@@ -17,6 +17,7 @@ import org.bukkit.scheduler.BukkitTask;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsCommand;
 import top.mrxiaom.crazyauctions.reloaded.command.CrazyAuctionsSubCommandType;
 import top.mrxiaom.crazyauctions.reloaded.currency.Vault;
+import top.mrxiaom.crazyauctions.reloaded.data.MarketGoods;
 import top.mrxiaom.crazyauctions.reloaded.database.GlobalMarket;
 import top.mrxiaom.crazyauctions.reloaded.database.engine.MySQLEngine;
 import top.mrxiaom.crazyauctions.reloaded.database.engine.SQLiteEngine;
