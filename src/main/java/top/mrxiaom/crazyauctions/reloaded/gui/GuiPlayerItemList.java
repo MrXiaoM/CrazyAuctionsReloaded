@@ -97,90 +97,87 @@ public class GuiPlayerItemList extends AbstractGui {
                 playClick(player);
                 return;
             }
-
-            MenuIcon icon = icons.get(slot);
-            if (icon != null) {
-                long uid = icon.uid;
-                boolean Repricing = e.getClick().equals(ClickType.RIGHT) || e.getClick().equals(ClickType.SHIFT_RIGHT);
-                MarketGoods mg = market.getMarketGoods(uid);
-                if (mg == null) {
+        }
+        MenuIcon icon = icons.get(slot);
+        if (icon != null) {
+            long uid = icon.uid;
+            boolean Repricing = e.getClick().equals(ClickType.RIGHT) || e.getClick().equals(ClickType.SHIFT_RIGHT);
+            MarketGoods mg = market.getMarketGoods(uid);
+            if (mg == null) {
+                playClick(player);
+                run(() -> openShop(player, type, category, 1));
+                MessageUtil.sendMessage(player, "Item-Doesnt-Exist");
+            } else switch (mg.getShopType()) {
+                case BID: {
+                    Map<String, String> placeholders = new HashMap<>();
+                    placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
+                    MessageUtil.sendMessage(player, "Cancelled-Item-On-Bid", placeholders);
+                    AuctionCancelledEvent event = new AuctionCancelledEvent(player, mg, CancelledReason.PLAYER_FORCE_CANCEL, ShopType.BID);
+                    Bukkit.getPluginManager().callEvent(event);
+                    if (mg.getTopBidder() != null && !mg.getTopBidder().equalsIgnoreCase("None")) {
+                        OfflinePlayer op = Bukkit.getOfflinePlayer(UUID.fromString(mg.getTopBidder().split(":")[1]));
+                        if (op != null) {
+                            CurrencyManager.addMoney(op, mg.getPrice());
+                        }
+                    }
+                    Storage playerData = Storage.getPlayer(mg.getItemOwner().getUUID());
+                    playerData.addItem(new ItemMail(playerData.makeUID(), mg.getItemOwner().getUUID(), mg.getItem(), PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")), System.currentTimeMillis(), false));
+                    market.removeGoods(uid);
+                    repricing.remove(player.getUniqueId());
                     playClick(player);
-                    run(() -> openShop(player, type, category, 1));
-                    MessageUtil.sendMessage(player, "Item-Doesnt-Exist");
-                } else switch (mg.getShopType()) {
-                    case BID: {
-                        Map<String, String> placeholders = new HashMap<>();
-                        placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
-                        MessageUtil.sendMessage(player, "Cancelled-Item-On-Bid", placeholders);
-                        AuctionCancelledEvent event = new AuctionCancelledEvent(player, mg, CancelledReason.PLAYER_FORCE_CANCEL, ShopType.BID);
-                        Bukkit.getPluginManager().callEvent(event);
-                        if (mg.getTopBidder() != null && !mg.getTopBidder().equalsIgnoreCase("None")) {
-                            OfflinePlayer op = Bukkit.getOfflinePlayer(UUID.fromString(mg.getTopBidder().split(":")[1]));
-                            if (op != null) {
-                                CurrencyManager.addMoney(op, mg.getPrice());
-                            }
-                        }
-                        Storage playerData = Storage.getPlayer(mg.getItemOwner().getUUID());
-                        playerData.addItem(new ItemMail(playerData.makeUID(), mg.getItemOwner().getUUID(), mg.getItem(), PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")), System.currentTimeMillis(), false));
-                        market.removeGoods(uid);
-                        repricing.remove(player.getUniqueId());
-                        playClick(player);
-                        page = 1;
-                        reopen();
-                        return;
-                    }
-                    case BUY: {
-                        if (Repricing) {
-                            repricing.put(player.getUniqueId(), new Object[]{mg, String.valueOf(System.currentTimeMillis() + (config.getInt("Settings.Repricing-Timeout") * 1000L))});
-                            Map<String, String> placeholders = new HashMap<>();
-                            placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
-                            placeholders.put("%timeout%", config.getString("Settings.Repricing-Timeout"));
-                            MessageUtil.sendMessage(player, "Repricing", placeholders);
-                            playClick(player);
-                            player.closeInventory();
-                            return;
-                        }
-                        Map<String, String> placeholders = new HashMap<>();
-                        placeholders.put("%reward%", String.valueOf(mg.getReward()));
-                        placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
-                        MessageUtil.sendMessage(player, "Cancelled-Item-On-Buy", placeholders);
-                        AuctionCancelledEvent event = new AuctionCancelledEvent(player, mg, CancelledReason.PLAYER_FORCE_CANCEL, ShopType.BUY);
-                        Bukkit.getPluginManager().callEvent(event);
-                        CurrencyManager.addMoney(player, mg.getReward());
-                        market.removeGoods(uid);
-                        repricing.remove(player.getUniqueId());
-                        playClick(player);
-                        page = 1;
-                        reopen();
-                        return;
-                    }
-                    case SELL: {
-                        if (Repricing) {
-                            repricing.put(player.getUniqueId(), new Object[]{mg, String.valueOf(System.currentTimeMillis() + (config.getInt("Settings.Repricing-Timeout") * 1000L))});
-                            Map<String, String> placeholders = new HashMap<>();
-                            placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
-                            placeholders.put("%timeout%", config.getString("Settings.Repricing-Timeout"));
-                            MessageUtil.sendMessage(player, "Repricing", placeholders);
-                            playClick(player);
-                            player.closeInventory();
-                            return;
-                        }
-                        Map<String, String> placeholders = new HashMap<>();
-                        placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
-                        MessageUtil.sendMessage(player, "Cancelled-Item-On-Sale", placeholders);
-                        AuctionCancelledEvent event = new AuctionCancelledEvent(player, mg, CancelledReason.PLAYER_FORCE_CANCEL, ShopType.SELL);
-                        Bukkit.getPluginManager().callEvent(event);
-                        Storage playerData = Storage.getPlayer(mg.getItemOwner().getUUID());
-                        playerData.addItem(new ItemMail(playerData.makeUID(), mg.getItemOwner().getUUID(), mg.getItem(), PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")), System.currentTimeMillis(), false));
-                        market.removeGoods(uid);
-                        repricing.remove(player.getUniqueId());
-                        playClick(player);
-                        page = 1;
-                        reopen();
-                        return;
-                    }
+                    page = 1;
+                    reopen();
+                    return;
                 }
-                return;
+                case BUY: {
+                    if (Repricing) {
+                        repricing.put(player.getUniqueId(), new Object[]{mg, String.valueOf(System.currentTimeMillis() + (config.getInt("Settings.Repricing-Timeout") * 1000L))});
+                        Map<String, String> placeholders = new HashMap<>();
+                        placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
+                        placeholders.put("%timeout%", config.getString("Settings.Repricing-Timeout"));
+                        MessageUtil.sendMessage(player, "Repricing", placeholders);
+                        playClick(player);
+                        player.closeInventory();
+                        return;
+                    }
+                    Map<String, String> placeholders = new HashMap<>();
+                    placeholders.put("%reward%", String.valueOf(mg.getReward()));
+                    placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
+                    MessageUtil.sendMessage(player, "Cancelled-Item-On-Buy", placeholders);
+                    AuctionCancelledEvent event = new AuctionCancelledEvent(player, mg, CancelledReason.PLAYER_FORCE_CANCEL, ShopType.BUY);
+                    Bukkit.getPluginManager().callEvent(event);
+                    CurrencyManager.addMoney(player, mg.getReward());
+                    market.removeGoods(uid);
+                    repricing.remove(player.getUniqueId());
+                    playClick(player);
+                    page = 1;
+                    reopen();
+                    return;
+                }
+                case SELL: {
+                    if (Repricing) {
+                        repricing.put(player.getUniqueId(), new Object[]{mg, String.valueOf(System.currentTimeMillis() + (config.getInt("Settings.Repricing-Timeout") * 1000L))});
+                        Map<String, String> placeholders = new HashMap<>();
+                        placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
+                        placeholders.put("%timeout%", config.getString("Settings.Repricing-Timeout"));
+                        MessageUtil.sendMessage(player, "Repricing", placeholders);
+                        playClick(player);
+                        player.closeInventory();
+                        return;
+                    }
+                    Map<String, String> placeholders = new HashMap<>();
+                    placeholders.put("%item%", LangUtilsHook.getItemName(mg.getItem()));
+                    MessageUtil.sendMessage(player, "Cancelled-Item-On-Sale", placeholders);
+                    AuctionCancelledEvent event = new AuctionCancelledEvent(player, mg, CancelledReason.PLAYER_FORCE_CANCEL, ShopType.SELL);
+                    Bukkit.getPluginManager().callEvent(event);
+                    Storage playerData = Storage.getPlayer(mg.getItemOwner().getUUID());
+                    playerData.addItem(new ItemMail(playerData.makeUID(), mg.getItemOwner().getUUID(), mg.getItem(), PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")), System.currentTimeMillis(), false));
+                    market.removeGoods(uid);
+                    repricing.remove(player.getUniqueId());
+                    playClick(player);
+                    page = 1;
+                    reopen();
+                }
             }
         }
     }
