@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.common.collect.Lists;
+import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
@@ -47,6 +48,16 @@ public class Main
 
     public IScheduler getScheduler() {
         return scheduler;
+    }
+
+    @Override
+    public void onLoad() {
+        MinecraftVersion.replaceLogger(getLogger());
+        MinecraftVersion.disableUpdateCheck();
+        MinecraftVersion.disableBStats();
+        if (MinecraftVersion.getVersion() == MinecraftVersion.UNKNOWN) {
+            throw new IllegalStateException("当前服务端版本 (" + Bukkit.getServer().getBukkitVersion() + ") 不受支持");
+        }
     }
 
     @Override
